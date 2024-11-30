@@ -4,7 +4,7 @@ import { useState } from 'react'
 
 import HelloPage from "./components/HelloPage"
 import CalibrationPage from "./components/calibration/CalibrationPage"
-import LoginPage from "./components/LoginPage"
+import LoginPage from "./components/login/LoginPage"
 
 import './App.css'
 
@@ -18,7 +18,7 @@ function App() {
         <Routes>
           <Route path="/" element={<HelloPage setIsTrackingEye={setIsTrackingEye} />} />
           <Route path="/calibration" element={<CalibrationPage setIsTrackingEye={setIsTrackingEye} />} />
-          <Route path="/login" element={<LoginPage isTrackingEye={isTrackingEye} />} />
+          <Route path="/login" element={<LoginPage isTrackingEye={isTrackingEye} setIsTrackingEye={setIsTrackingEye}/>} />
         </Routes>
       </Router>
     </>

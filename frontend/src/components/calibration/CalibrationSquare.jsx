@@ -10,12 +10,11 @@ export default function CalibrationSquare({ x, y, size, onClick }) {
     }
   };
 
-  // Calculate the color transition from red to orange to yellow to green
   const colors = [
     "rgb(255, 0, 0)", // Red
-    "rgb(255, 165, 0)", // Orange
-    "rgb(255, 255, 0)", // Vibrant Yellow
-    "rgb(0, 255, 0)", // Strong Green
+    "rgb(255, 140, 0)", // Darker Orange
+    "rgb(255, 255, 0)", // Bright Yellow
+    "rgb(0, 200, 0)", // Strong Green
   ];
   const color = colors[clickCount];
 
@@ -31,8 +30,15 @@ export default function CalibrationSquare({ x, y, size, onClick }) {
         backgroundColor: color,
         border: "2px solid black",
         cursor: clickCount < 3 ? "pointer" : "default",
-        pointerEvents: clickCount >= 3 ? "none" : "auto", // Disable clicking after 4 clicks
+        pointerEvents: clickCount >= 3 ? "none" : "auto",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        fontSize: "24px",
+        color: "white",
       }}
-    />
+    >
+      {clickCount === 3 && "✓"}
+    </div>
   );
 }

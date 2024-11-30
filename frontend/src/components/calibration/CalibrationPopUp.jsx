@@ -15,7 +15,7 @@ const CalibrationPopUp = ({ message, buttonText, onClose }) => {
         borderRadius: "10px",
         textAlign: "center",
         zIndex: 1000,
-        color: "black", // Set text color to black
+        color: "black", 
       }}
     >
       <h2>Welcome!</h2>

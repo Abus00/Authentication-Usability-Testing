@@ -12,26 +12,25 @@ export default function CalibrationPage({ setIsTrackingEye }) {
   const navigate = useNavigate();
 
   const calibrationPoints = [
-    { x: "50%", y: "20%" }, // Top-middle-left
-    { x: "90%", y: "20%" }, // Top-right
-    { x: "10%", y: "50%" }, // Middle-left
-    { x: "50%", y: "50%" }, // Center (unchanged)
-    { x: "90%", y: "50%" }, // Middle-right
-    { x: "10%", y: "80%" }, // Bottom-left
-    { x: "50%", y: "80%" }, // Bottom-middle
-    { x: "90%", y: "80%" }, // Bottom-right
-    { x: "30%", y: "35%" }, // New column 1, row 1.5
-    { x: "30%", y: "65%" }, // New column 1, row 2.5
-    { x: "70%", y: "35%" }, // New column 2, row 1.5
-    { x: "70%", y: "65%" }, // New column 2, row 2.5
-    { x: "70%", y: "5%" },  // New column 1, row 2
-    { x: "30%", y: "5%" },  // New column 2, row 2
-    { x: "30%", y: "90%" }, // New column 3, row 1
-    { x: "70%", y: "90%" }, // New column 4, row 1
+    { x: "50%", y: "20%" }, 
+    { x: "90%", y: "20%" }, 
+    { x: "10%", y: "50%" }, 
+/*     { x: "50%", y: "50%" }, 
+    { x: "90%", y: "50%" }, 
+    { x: "10%", y: "80%" },
+    { x: "50%", y: "80%" }, 
+    { x: "90%", y: "80%" }, 
+    { x: "30%", y: "35%" }, 
+    { x: "30%", y: "65%" }, 
+    { x: "70%", y: "35%" }, 
+    { x: "70%", y: "65%" }, 
+    { x: "70%", y: "5%" },  
+    { x: "30%", y: "5%" },  
+    { x: "30%", y: "90%" }, 
+    { x: "70%", y: "90%" },  */
   ];
 
   useEffect(() => {
-    // Initialize WebGazer when the popup is closed
     if (!showPopup) {
       try {
         window.webgazer
@@ -39,24 +38,14 @@ export default function CalibrationPage({ setIsTrackingEye }) {
           .showVideo(true)
           .showFaceOverlay(true)
           .begin();
-
-        // Configure WebGazer video styles
-        const video = document.querySelector("#webgazerVideoFeed");
-        if (video) {
-          video.style.userSelect = "none";
-          video.style.pointerEvents = "none";
-          video.style.position = "absolute";
-          video.style.top = "10px";
-          video.style.left = "10px";
-          video.style.zIndex = "10";
-        }
       } catch (error) {
         console.error("Error initializing WebGazer:", error);
       }
     }
 
-    // Cleanup WebGazer on unmount
+    // This is being run when the website is reloaded or the page is closed
     const handleBeforeUnload = () => {
+      console.log("USER RELOADED")
       if (window.webgazer && !webgazerEnded) {
         try {
           window.webgazer.end();
@@ -66,14 +55,19 @@ export default function CalibrationPage({ setIsTrackingEye }) {
         }
       }
     };
-
     window.addEventListener("beforeunload", handleBeforeUnload);
 
+    // This is being run when the user navigates away from the page i.e. to the login page
     return () => {
+      console.log("USER NAVIGATES AWAY")
       window.removeEventListener("beforeunload", handleBeforeUnload);
       if (window.webgazer && !webgazerEnded) {
         try {
-          window.webgazer.pause(); // Use pause instead of end for routing to login page
+          window.webgazer
+          .showPredictionPoints(false)
+          .showFaceOverlay(false)
+          .showVideo(false)
+          .pause(); // Use pause instead of end so that the login page only has to resume
           setWebgazerEnded(true);
         } catch (error) {
           console.warn("Error cleaning up WebGazer:", error);
@@ -101,7 +95,7 @@ export default function CalibrationPage({ setIsTrackingEye }) {
     <div className="calibration-page">
       {showPopup && (
         <CalibrationPopUp
-          message="Please click on each red box 4 times, until it goes from red to green! Make sure to always look to where your mouse is pointing, so that the calibration is accurate."
+          message="Please click on each red box 3 times, until it goes from red to green and has a little check-symbol in it! Make sure to always look to where your mouse is pointing, so that the calibration is accurate."
           buttonText="Yes, Understood"
           onClose={() => setShowPopup(false)}
         />
