@@ -3,16 +3,15 @@ import { useNavigate } from 'react-router-dom';
 
 import EmailOnlyLogin from "./authOptions/EmailOnlyLogin";
 import EmailPasswordLogin from "./authOptions/EmailPasswordLogin";
-import GeographicLogin from "./authOptions/GeographicLogin";
 import PasskeyLogin from "./authOptions/PasskeyLogin";
 
-import "../../styles/LoginPage.css";
+import "../../styles/loginStyles/LoginPage.css";
 
 export default function LoginPage({ isTrackingEye, setIsTrackingEye }) {
 
     const [choseLoginDisplay, setChoseLoginDisplay] = useState(true);
     const [chosenOption, setChosenOption] = useState(null);
-    const options = ["emailOnly", "emailPassword", "geographic", "passkey"];
+    const options = ["emailOnly", "emailPassword", "passkey"];
 
     useEffect(() => {
         if (isTrackingEye) {
@@ -40,9 +39,6 @@ export default function LoginPage({ isTrackingEye, setIsTrackingEye }) {
             case "emailPassword":
                 setChosenOption(<EmailPasswordLogin />);
                 break;
-            case "geographic":
-                setChosenOption(<GeographicLogin />);
-                break;
             case "passkey":
                 setChosenOption(<PasskeyLogin />);
                 break;
@@ -57,8 +53,6 @@ export default function LoginPage({ isTrackingEye, setIsTrackingEye }) {
                 return "Email Only Login. This option requires you to enter your email address only. Afterwards you will receive an email with a code to login.";
             case "emailPassword":
                 return "The classical Email and Password Login";
-            case "geographic":
-                return "Geographic Login: choose a location on the map and a phrase that you connect with that location";
             case "passkey":
                 return "Passkey Login: Scan a QR code with your phone to login";
             default:

@@ -2,12 +2,12 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import CalibrationSquare from "./CalibrationSquare";
 import CalibrationPopUp from "./CalibrationPopUp";
-import "../../styles/CalibrationPage.css";
+import "../../styles/calibrationStyles/CalibrationPage.css";
 
 export default function CalibrationPage({ setIsTrackingEye }) {
   const [showPopup, setShowPopup] = useState(true);
   const [webgazerEnded, setWebgazerEnded] = useState(false);
-  const [calibrationCounts, setCalibrationCounts] = useState(Array(16).fill(0));
+  const [calibrationCounts, setCalibrationCounts] = useState(Array(3).fill(0)); //change this later to 16
   const [allCalibrated, setAllCalibrated] = useState(false);
   const navigate = useNavigate();
 
