@@ -5,7 +5,7 @@ const validator = require("validator"); // Correct import
 
 exports.emailPasswordLogin = async (req, res) => {
     console.log("Received request to login with email and password");
-    const { emailAddress: email, userPassword: password, firstName: userName, lastName: userLastname, gender: userSex, userAge: age } = req.body;
+    const { emailAddress: email, userPassword: password } = req.body;
 
     try {
         const sanitizedEmail = validator.normalizeEmail(email); 
@@ -33,14 +33,10 @@ exports.emailPasswordLogin = async (req, res) => {
             const salt = await bcrypt.genSalt(10);
             const hashedPassword = await bcrypt.hash(password, salt);
 
-            console.log(`Before creating user with email ${sanitizedEmail, userName, userLastname, userSex, age}`);
+            console.log(`Before creating user with email ${sanitizedEmail}`);
             user = await userModel.create({
                 email: sanitizedEmail,
                 password: hashedPassword,
-                name: userName,
-                lastname: userLastname,
-                sex: userSex,
-                age: age,
             });
 
             console.log(`User with email ${sanitizedEmail} created successfully`);

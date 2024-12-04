@@ -16,6 +16,9 @@ Ensure you have the following installed on your machine:
 - **npm**: Comes bundled with Node.js
 - **OpenSSL**: Pre-installed on most Linux and macOS systems. For Windows, you can install it using [these instructions](https://wiki.openssl.org/index.php/Binaries).
 
+The project is configured for local use only, and thus has specified ports for both backend and frontend. 
+A change in any of the configurational files therefore requires updates in other files aswell.
+
 ---
 
 ## Backend Setup
@@ -65,8 +68,7 @@ npm install
 To start the backend server, navigate to the src/ directory inside backend and run:
 
 ```bash
-cd src
-node index.js
+npm start
 ```
 
 ## Frontend Setup 

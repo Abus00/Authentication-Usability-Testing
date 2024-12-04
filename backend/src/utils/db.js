@@ -1,5 +1,3 @@
-// Setup database functionality
-
 const sqlite3 = require("sqlite3").verbose();
 const path = require("path");
 
@@ -18,23 +16,30 @@ const createTables = () => {
       CREATE TABLE IF NOT EXISTS users (
         email TEXT PRIMARY KEY,
         password TEXT NOT NULL,
-        name TEXT NOT NULL,
-        lastname TEXT NOT NULL,
+        name TEXT,
+        lastname TEXT,
         sex TEXT CHECK (sex IN ('male', 'female', 'other')),
         age INTEGER CHECK (age > 0),
         created_at DATETIME DEFAULT CURRENT_TIMESTAMP
       );
     `;
-  
-    db.run(usersTable, (err) => {
-      if (err) {
-        console.error("Error creating users table:", err.message);
-      } else {
-        console.log("Users table is ready.");
-      }
+
+    db.get("PRAGMA table_info(users);", (err, row) => {
+        if (err) {
+            console.error("Error checking users table:", err.message);
+        } else if (!row) {
+            db.run(usersTable, (err) => {
+                if (err) {
+                    console.error("Error creating users table:", err.message);
+                } else {
+                    console.log("Users table created successfully.");
+                }
+            });
+        } else {
+            console.log("Users table already exists.");
+        }
     });
 };
-
 
 createTables();
 

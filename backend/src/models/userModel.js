@@ -13,16 +13,32 @@ const findByEmail = async (email) => {
   });
 };
 
-const create = async ({ email, password, name, lastname, sex, age }) => {
+const create = async ({ email, password }) => {
   const query = `
-    INSERT INTO users (email, password, name, lastname, sex, age)
-    VALUES (?, ?, ?, ?, ?, ?)`;
+    INSERT INTO users (email, password)
+    VALUES (?, ?)`;
   return new Promise((resolve, reject) => {
-    db.run(query, [email, password, name, lastname, sex, age], function (err) {
+    db.run(query, [email, password], function (err) {
       if (err) {
         reject(err);
       } else {
-        resolve({ id: this.lastID, email, name, lastname, sex, age });
+        resolve({ id: this.lastID, email, password });
+      }
+    });
+  });
+};
+
+const update = async (user) => {
+  const query = `
+    UPDATE users
+    SET name = ?, lastname = ?, sex = ?, age = ?
+    WHERE email = ?`;
+  return new Promise((resolve, reject) => {
+    db.run(query, [user.name, user.lastname, user.sex, user.age, user.email], function (err) {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(user);
       }
     });
   });
@@ -31,4 +47,5 @@ const create = async ({ email, password, name, lastname, sex, age }) => {
 module.exports = {
   findByEmail,
   create,
+  update,
 };
