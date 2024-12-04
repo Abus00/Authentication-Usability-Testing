@@ -38,8 +38,8 @@ openssl req -new -key key.pem -out csr.pem
 
 # Generate a self-signed certificate
 openssl x509 -req -days 365 -in csr.pem -signkey key.pem -out cert.pem
-
 ```
+You need to add the vite-cert.pem to your systems trusted certificates.
 
 ### Step 2: Configure Environment Variables
 
@@ -82,14 +82,34 @@ mv .env.example .env
 
 After renaming, update the backend url.
 
-### Step 2: Install Dependencies
+### Step 2: Generate a Self-Signed Certificate for Frontend
+To set up HTTPS for the frontend, generate a self-signed certificate using OpenSSL. 
+
+#### Commands
+```bash
+# Navigate to the frontend directory
+cd frontend
+
+# Generate a private key
+openssl genrsa -out vite-key.pem 2048
+
+# Generate a certificate signing request (CSR)
+openssl req -new -key vite-key.pem -out vite-csr.pem
+
+# Generate a self-signed certificate
+openssl x509 -req -days 365 -in vite-csr.pem -signkey vite-key.pem -out vite-cert.pem
+```
+
+You need to add the vite-cert.pem to your systems trusted certificates.
+
+### Step 3: Install Dependencies
 Navigate to the frontend/ directory and install all required dependencies:
 ```bash
 cd frontend
 npm install
 ```
 
-### Step 3: Run the Frontend
+### Step 4: Run the Frontend
 Start the React development server:
 
 ```bash 

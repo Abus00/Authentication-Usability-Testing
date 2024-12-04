@@ -36,3 +36,6 @@ dist-ssr/
 key.pem
 cert.pem
 csr.pem
+
+#database file (i forgot this somehow)
+database.db
