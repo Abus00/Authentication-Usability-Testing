@@ -4,10 +4,12 @@ import '../../../styles/loginStyles/EmailOnlyLogin.css'; // Import the CSS file
 
 const EmailOnlyLogin = () => {
   const [email, setEmail] = useState('');
+  const [verificationCode, setVerificationCode] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [codeSent, setCodeSent] = useState(false);
 
-  const handleSubmit = async (e) => {
+  const handleEmailSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
@@ -19,54 +21,105 @@ const EmailOnlyLogin = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email: sanitizedEmail }),
+        body: JSON.stringify({ emailAddress: sanitizedEmail }),
       });
 
       if (!response.ok) {
-        throw new Error('Login failed');
+        const errorMessage = await response.json();
+        throw new Error('Failed to send verification code to email: ' + errorMessage.message);
       }
 
-      const data = await response.json();
-      console.log('Login successful:', data);
-
-      // Store JWT token in local storage
-      localStorage.setItem('token', data.token);
-
-      // Handle successful login (e.g., redirect to dashboard)
+      setCodeSent(true);
+      console.log('Verification code sent to email:', email);
     } catch (err) {
       setError(err.message);
-      // Reset email field on login failure
       setEmail('');
     } finally {
       setLoading(false);
     }
   };
 
+  const handleCodeSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError(null);
+
+    try {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/auth/verify-email`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, code: verificationCode }),
+      });
+
+      if (!response.ok) {
+        const errorMessage = await response.json();
+        throw new Error('Verification failed with error: ' + errorMessage.message);
+      }
+
+      const data = await response.json();
+      console.log('Verification successful:', data);
+      localStorage.setItem('token', data.token);
+
+      //TODO
+    } catch (err) {
+      setError(err.message);
+      setVerificationCode('');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const isEmailValid = validator.isEmail(email);
+  const isCodeValid = verificationCode.length === 6;
 
   return (
     <div className="email-only-login-container">
       <h2>Email Only Login</h2>
-      <form onSubmit={handleSubmit} className="email-only-login-form">
-        <label htmlFor="email">Email:</label>
-        <input
-          id="email"
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-          className="email-only-login-input"
-          placeholder="Enter your email"
-        />
-        <button
-          type="submit"
-          disabled={!isEmailValid || loading}
-          className="submit-button"
-        >
-          {loading ? 'Logging in...' : 'Login'}
-        </button>
-        {error && <p className="error-message">{error}</p>}
-      </form>
+      {!codeSent ? (
+        <form onSubmit={handleEmailSubmit} className="email-only-login-form">
+          <label htmlFor="email">Email:</label>
+          <input
+            id="email"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            className="email-only-login-input"
+            placeholder="Enter your email"
+          />
+          <button
+            type="submit"
+            disabled={!isEmailValid || loading}
+            className="submit-button"
+          >
+            {loading ? 'Sending...' : 'Send Verification Code'}
+          </button>
+          {error && <p className="error-message">{error}</p>}
+        </form>
+      ) : (
+        <form onSubmit={handleCodeSubmit} className="email-only-login-form">
+          <label htmlFor="verificationCode">Verification Code:</label>
+          <input
+            id="verificationCode"
+            type="text"
+            value={verificationCode}
+            onChange={(e) => setVerificationCode(e.target.value)}
+            required
+            className="email-only-login-input"
+            placeholder="Enter the verification code"
+          />
+          <button
+            type="submit"
+            disabled={!isCodeValid || loading}
+            className="submit-button"
+          >
+            {loading ? 'Verifying...' : 'Verify Code'}
+          </button>
+          {error && <p className="error-message">{error}</p>}
+        </form>
+      )}
     </div>
   );
 };

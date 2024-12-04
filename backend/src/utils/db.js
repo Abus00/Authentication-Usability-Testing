@@ -15,7 +15,7 @@ const createTables = () => {
     const usersTable = `
       CREATE TABLE IF NOT EXISTS users (
         email TEXT PRIMARY KEY,
-        password TEXT NOT NULL,
+        password TEXT,
         name TEXT,
         lastname TEXT,
         sex TEXT CHECK (sex IN ('male', 'female', 'other')),
@@ -24,20 +24,29 @@ const createTables = () => {
       );
     `;
 
-    db.get("PRAGMA table_info(users);", (err, row) => {
-        if (err) {
-            console.error("Error checking users table:", err.message);
-        } else if (!row) {
-            db.run(usersTable, (err) => {
-                if (err) {
-                    console.error("Error creating users table:", err.message);
-                } else {
-                    console.log("Users table created successfully.");
-                }
-            });
-        } else {
-            console.log("Users table already exists.");
-        }
+    const verificationCodesTable = `
+      CREATE TABLE IF NOT EXISTS verification_codes (
+        email TEXT UNIQUE,
+        code INTEGER,
+        expires_at DATETIME,
+        FOREIGN KEY (email) REFERENCES users(email)
+      );
+    `;
+
+    db.run(usersTable, (err) => {
+      if (err) {
+        console.error("Error creating users table:", err.message);
+      } else {
+        console.log("Users table is ready.");
+      }
+    });
+
+    db.run(verificationCodesTable, (err) => {
+      if (err) {
+        console.error("Error creating verification codes table:", err.message);
+      } else {
+        console.log("Verification codes table is ready.");
+      }
     });
 };
 

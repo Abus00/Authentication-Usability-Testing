@@ -1,15 +1,16 @@
 const { generateAuthToken } = require("../utils/jwtUtils");
+const { sendVerificationEmail } = require("../utils/emailService");
 const userModel = require("../models/userModel");
 const bcrypt = require("bcryptjs");
-const validator = require("validator"); // Correct import
+const validator = require("validator");
 
 exports.emailPasswordLogin = async (req, res) => {
     console.log("Received request to login with email and password");
     const { emailAddress: email, userPassword: password } = req.body;
 
     try {
-        const sanitizedEmail = validator.normalizeEmail(email); 
-        if (!validator.isEmail(sanitizedEmail)) { 
+        const sanitizedEmail = validator.normalizeEmail(email);
+        if (!validator.isEmail(sanitizedEmail)) {
             return res.status(400).json({ message: "Invalid email!" });
         }
 
@@ -53,6 +54,47 @@ exports.emailPasswordLogin = async (req, res) => {
         return res.status(200).json({ token, message: "Login successful" });
     } catch (error) {
         console.error(error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+};
+
+exports.emailOnlyLogin = async (req, res) => {
+    console.log("Received request to login with email only");
+    const { emailAddress: email } = req.body;
+
+    try {
+        const verificationCode = Math.floor(100000 + Math.random() * 900000);
+
+        await sendVerificationEmail(email, verificationCode);
+
+        const user = await userModel.findByEmail(email);
+        if (!user) {
+            await userModel.createEmailOnly(email);
+        }
+
+        await userModel.updateVerificationCode(email, verificationCode);
+
+        res.status(200).json({ message: "Verification code sent to your email" });
+    } catch (error) {
+        console.error("Error in email login:", error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+};
+
+exports.verifyEmailCode = async (req, res) => {
+    console.log("Received request to verify email code");
+    const { email, code } = req.body;
+
+    try {
+        const isValid = await userModel.verifyCode(email, code);
+        if (!isValid) {
+            return res.status(400).json({ message: "Invalid or expired verification code" });
+        }
+
+        const token = generateAuthToken({ email });
+        return res.status(200).json({ token, message: "Verification successful" });
+    } catch (error) {
+        console.error("Error verifying email code:", error);
         res.status(500).json({ message: "Internal server error" });
     }
 };
