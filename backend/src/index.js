@@ -4,7 +4,9 @@ const app = require("./app");
 const dotenv = require("dotenv");
 const path = require("path");
 
+
 dotenv.config({ path: path.resolve(__dirname, "../.env") });
+//console.log(process.env);
 
 const PORT = process.env.PORT || 3001;
 
