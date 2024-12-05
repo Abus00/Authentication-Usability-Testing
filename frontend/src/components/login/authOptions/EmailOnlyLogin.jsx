@@ -15,13 +15,12 @@ const EmailOnlyLogin = () => {
     setError(null);
 
     try {
-      const sanitizedEmail = validator.normalizeEmail(email);
       const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/auth/email-only`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ emailAddress: sanitizedEmail }),
+        body: JSON.stringify({ emailAddress: email }),
       });
 
       if (!response.ok) {

@@ -26,7 +26,7 @@ const createTables = () => {
 
     const verificationCodesTable = `
       CREATE TABLE IF NOT EXISTS verification_codes (
-        email TEXT UNIQUE,
+        email TEXT,
         code INTEGER,
         expires_at DATETIME,
         FOREIGN KEY (email) REFERENCES users(email)

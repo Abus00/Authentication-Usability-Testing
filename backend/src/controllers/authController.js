@@ -9,7 +9,7 @@ exports.emailPasswordLogin = async (req, res) => {
     const { emailAddress: email, userPassword: password } = req.body;
 
     try {
-        const sanitizedEmail = validator.normalizeEmail(email);
+        const sanitizedEmail = validator.normalizeEmail(email, {gmail_remove_dots: false});
         if (!validator.isEmail(sanitizedEmail)) {
             return res.status(400).json({ message: "Invalid email!" });
         }
@@ -63,16 +63,18 @@ exports.emailOnlyLogin = async (req, res) => {
     const { emailAddress: email } = req.body;
 
     try {
+
+        const sanitizedEmail = validator.normalizeEmail(email, {gmail_remove_dots: false});
         const verificationCode = Math.floor(100000 + Math.random() * 900000);
 
-        await sendVerificationEmail(email, verificationCode);
-
-        const user = await userModel.findByEmail(email);
+        const user = await userModel.findByEmail(sanitizedEmail);
         if (!user) {
-            await userModel.createEmailOnly(email);
+            await userModel.createEmailOnly(sanitizedEmail);
         }
 
-        await userModel.updateVerificationCode(email, verificationCode);
+        await userModel.updateVerificationCode(sanitizedEmail, verificationCode);
+
+        await sendVerificationEmail(sanitizedEmail, verificationCode);
 
         res.status(200).json({ message: "Verification code sent to your email" });
     } catch (error) {
@@ -84,9 +86,13 @@ exports.emailOnlyLogin = async (req, res) => {
 exports.verifyEmailCode = async (req, res) => {
     console.log("Received request to verify email code");
     const { email, code } = req.body;
+    console.log("Email: ", email, "\nCode: ", code);
 
     try {
-        const isValid = await userModel.verifyCode(email, code);
+        const sanitizedEmail = validator.normalizeEmail(email, {gmail_remove_dots: false});
+        const isValid = await userModel.verifyCode(sanitizedEmail, code);
+        console.log("The local time is: ", new Date(Date.now()).toISOString());
+        console.log("Verification result: ", isValid);
         if (!isValid) {
             return res.status(400).json({ message: "Invalid or expired verification code" });
         }

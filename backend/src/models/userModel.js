@@ -60,13 +60,11 @@ const createEmailOnly = async (email) => {
 };
 
 const updateVerificationCode = async (email, code) => {
-  const expiresAt = new Date(Date.now() + 15 * 60 * 1000); // 15 minutes from now
+  const expiresAt = Date.now() + 15 * 60 * 1000; // 15 minutes from now in milliseconds
+  console.log(`Storing verification code: ${code} for email: ${email} with expiration: ${new Date(expiresAt).toISOString()}`);
   const query = `
     INSERT INTO verification_codes (email, code, expires_at)
     VALUES (?, ?, ?)
-    ON CONFLICT(email) DO UPDATE SET
-      code = excluded.code,
-      expires_at = excluded.expires_at;
   `;
   return new Promise((resolve, reject) => {
     db.run(query, [email, code, expiresAt], function (err) {
@@ -80,16 +78,34 @@ const updateVerificationCode = async (email, code) => {
 };
 
 const verifyCode = async (email, code) => {
+  console.log(`Verifying code: ${code} for email: ${email}`);
+
   const query = `
     SELECT * FROM verification_codes
-    WHERE email = ? AND code = ? AND expires_at > datetime('now')
+    WHERE email = ? AND code = ?
   `;
+  console.log(`Executing query: ${query} with email: ${email} and code: ${code}`);
   return new Promise((resolve, reject) => {
     db.get(query, [email, code], (err, row) => {
       if (err) {
+        console.log("Error verifying code: ", err);
         reject(err);
       } else {
-        resolve(row);
+        if (row) {
+          const currentTime = Date.now();
+          const expirationTime = parseInt(row.expires_at, 10); 
+          console.log(`Retrieved verification code: ${row.code} for email: ${email} with expiration: ${new Date(expirationTime).toISOString()}`);
+          if (currentTime <= expirationTime) {
+            console.log(`Verification code for email: ${email} is valid`);
+            resolve(row);
+          } else {
+            console.log(`Verification code for email: ${email} has expired`);
+            resolve(null);
+          }
+        } else {
+          console.log(`No valid verification code found for email: ${email}`);
+          resolve(null);
+        }
       }
     });
   });

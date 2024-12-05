@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import validator from 'validator';
 import '../../../styles/loginStyles/EmailPasswordLogin.css'; // Import the CSS file
 
 const EmailPasswordLogin = () => {
@@ -37,14 +38,12 @@ const EmailPasswordLogin = () => {
       //TODO
     } catch (err) {
       setError(err.message);
-      // setEmail('');
-      // setPassword('');
     } finally {
       setLoading(false);
     }
   };
 
-  const isEmailValid = email.includes('@') && email.includes('.');
+  const isEmailValid = validator.isEmail(email);
   const isFormValid = isEmailValid && password;
 
   return (
