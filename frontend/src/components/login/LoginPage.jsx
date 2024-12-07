@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 
 import EmailOnlyLogin from "./authOptions/EmailOnlyLogin";
 import EmailPasswordLogin from "./authOptions/EmailPasswordLogin";
-import PasskeyLogin from "./authOptions/PasskeyLogin";
 
 import "../../styles/loginStyles/LoginPage.css";
 
@@ -11,7 +10,7 @@ export default function LoginPage({ isTrackingEye, setIsTrackingEye }) {
 
     const [choseLoginDisplay, setChoseLoginDisplay] = useState(true);
     const [chosenOption, setChosenOption] = useState(null);
-    const options = ["emailOnly", "emailPassword", "passkey"];
+    const options = ["emailOnly", "emailPassword"];
 
     useEffect(() => {
         if (isTrackingEye) {
@@ -39,9 +38,6 @@ export default function LoginPage({ isTrackingEye, setIsTrackingEye }) {
             case "emailPassword":
                 setChosenOption(<EmailPasswordLogin />);
                 break;
-            case "passkey":
-                setChosenOption(<PasskeyLogin />);
-                break;
             default:
                 setChosenOption(null);
         }
@@ -53,18 +49,16 @@ export default function LoginPage({ isTrackingEye, setIsTrackingEye }) {
                 return "Email Only Login. This option requires you to enter your email address only. Afterwards you will receive an email with a code to login.";
             case "emailPassword":
                 return "The classical Email and Password Login";
-            case "passkey":
-                return "Passkey Login: Scan a QR code with your phone to login";
             default:
                 return "No option selected";
         }
     };
 
     const chooseTwoLoginOptions = () => {
-        const randomOption1 = Math.floor(Math.random() * 4);
+        const randomOption1 = Math.floor(Math.random() * options.length);
         let randomOption2;
         do {
-            randomOption2 = Math.floor(Math.random() * 4);
+            randomOption2 = Math.floor(Math.random() * options.length);
         } while (randomOption1 === randomOption2);
         const option1 = options[randomOption1];
         const option2 = options[randomOption2];

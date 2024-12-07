@@ -61,7 +61,8 @@ const EmailOnlyLogin = () => {
       console.log('Verification successful:', data);
       localStorage.setItem('token', data.token);
 
-      //TODO
+      //TODO go to survey page
+      navigate('/survey', { state: { email } });
     } catch (err) {
       setError(err.message);
       setVerificationCode('');

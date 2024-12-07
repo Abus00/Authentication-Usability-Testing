@@ -33,9 +33,10 @@ const EmailPasswordLogin = () => {
 
       const data = await response.json();
       console.log('Login successful:', data);
-
       localStorage.setItem('token', data.token);
+
       //TODO
+      navigate('/survey', { state: { email } });
     } catch (err) {
       setError(err.message);
     } finally {
