@@ -1,16 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { fetchNASAQuestions } from "../../utils/api";
 
 const NASAScale = ({ onNext, onBack }) => {
   const [responses, setResponses] = useState({});
+  const [questions, setQuestions] = useState([]);
 
-  const dimensions = [
-    "Mental Demand",
-    "Physical Demand",
-    "Temporal Demand",
-    "Performance",
-    "Effort",
-    "Frustration",
-  ];
+  useEffect(() => {
+    const getQuestions = async () => {
+      const questions = await fetchNASAQuestions();
+      console.log(questions);
+      setQuestions(questions);
+    };
+    getQuestions();
+  }, []);
 
   const handleChange = (dimension, value) => {
     setResponses({ ...responses, [dimension]: value });
@@ -24,16 +26,16 @@ const NASAScale = ({ onNext, onBack }) => {
   return (
     <form className="nasa-scale-form" onSubmit={handleSubmit}>
       <h2>NASA Task Load Index (NASA-TLX)</h2>
-      {dimensions.map((dimension, index) => (
+      {questions.map((question, index) => (
         <div key={index} className="dimension">
-          <p>{dimension}</p>
+          <p>{question.question_text}</p>
           {[1, 2, 3, 4, 5, 6, 7].map((value) => (
             <label key={value}>
               <input
                 type="radio"
                 name={`dimension-${index}`}
                 value={value}
-                onChange={() => handleChange(dimension, value)}
+                onChange={() => handleChange(question.question_text, value)}
                 required
               />
               {value}
@@ -41,8 +43,8 @@ const NASAScale = ({ onNext, onBack }) => {
           ))}
         </div>
       ))}
-      <button type="submit">Next</button>
       <button type="button" onClick={onBack}>Back</button>
+      <button type="submit">Next</button>
     </form>
   );
 };
