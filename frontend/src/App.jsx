@@ -2,10 +2,10 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useState } from 'react';
 
-import HelloPage from "./components/HelloPage";
-import CalibrationPage from "./components/calibration/CalibrationPage";
-import LoginPage from "./components/login/LoginPage";
-import SurveyContainer from "./components/survey/SurveyContainer";
+import HelloPage from "./pages/HelloPage";
+import CalibrationPage from "./pages/CalibrationPage";
+import LoginPage from "./pages/LoginPage";
+import SurveyContainer from "./pages/SurveyContainer";
 
 
 import './App.css'

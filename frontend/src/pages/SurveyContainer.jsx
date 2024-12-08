@@ -1,8 +1,8 @@
 import React, {useState, useEffect } from "react";
-import PersonalInfoForm from "./PersonalInfoForm";
-import LikertScale from "./LikertScale";
-import SUSScale from "./SystemUsabilityScale";
-import NASAScale from "./NASAScale";
+import PersonalInfoForm from "../components/survey/PersonalInfoForm";
+import LikertScale from "../components/survey/LikertScale";
+import SUSScale from "../components/survey/SystemUsabilityScale";
+import NASAScale from "../components/survey/NASAScale";
 
 
 export default function SurveyContainer({isTrackingEye, email}) {

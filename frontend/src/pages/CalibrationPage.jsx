@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import CalibrationSquare from "./CalibrationSquare";
-import CalibrationPopUp from "./CalibrationPopUp";
-import "../../styles/calibrationStyles/CalibrationPage.css";
+import CalibrationSquare from "../components/calibration/CalibrationSquare";
+import CalibrationPopUp from "../components/calibration/CalibrationPopUp";
+import "../styles/calibrationStyles/CalibrationPage.css";
 
 export default function CalibrationPage({ setIsTrackingEye }) {
   const [showPopup, setShowPopup] = useState(true);

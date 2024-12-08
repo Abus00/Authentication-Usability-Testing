@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
 
-import EmailOnlyLogin from "./authOptions/EmailOnlyLogin";
-import EmailPasswordLogin from "./authOptions/EmailPasswordLogin";
+import EmailOnlyLogin from "../components/login/EmailOnlyLogin";
+import EmailPasswordLogin from "../components/login/EmailPasswordLogin";
 
-import "../../styles/loginStyles/LoginPage.css";
+import "../styles/loginStyles/LoginPage.css";
 
 export default function LoginPage({ isTrackingEye, setIsTrackingEye }) {
 

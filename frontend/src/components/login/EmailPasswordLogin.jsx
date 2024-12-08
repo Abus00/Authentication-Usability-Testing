@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import validator from 'validator';
-import '../../../styles/loginStyles/EmailPasswordLogin.css'; // Import the CSS file
+import '../../styles/loginStyles/EmailPasswordLogin.css'; 
 
 const EmailPasswordLogin = () => {
   const [email, setEmail] = useState('');

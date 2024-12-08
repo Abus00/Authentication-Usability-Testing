@@ -33,7 +33,6 @@ const createTables = () => {
       );
     `;
 
-    // Likert Questions Table
     const likertQuestionsTable = `
       CREATE TABLE IF NOT EXISTS likert_questions (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -41,7 +40,6 @@ const createTables = () => {
       );
     `;
 
-    // Likert Responses Table
     const likertResponsesTable = `
       CREATE TABLE IF NOT EXISTS likert_responses (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -53,7 +51,6 @@ const createTables = () => {
       );
     `;
 
-    // SUS Questions Table
     const susQuestionsTable = `
       CREATE TABLE IF NOT EXISTS sus_questions (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -61,7 +58,6 @@ const createTables = () => {
       );
     `;
 
-    // SUS Responses Table
     const susResponsesTable = `
       CREATE TABLE IF NOT EXISTS sus_responses (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -73,7 +69,6 @@ const createTables = () => {
       );
     `;
 
-    // NASA-TLX Questions Table
     const nasaQuestionsTable = `
       CREATE TABLE IF NOT EXISTS nasa_questions (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -81,7 +76,6 @@ const createTables = () => {
       );
     `;
 
-    // NASA-TLX Responses Table
     const nasaResponsesTable = `
       CREATE TABLE IF NOT EXISTS nasa_responses (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -93,7 +87,6 @@ const createTables = () => {
       );
     `;
 
-    // Open-Ended Feedback Table
     const feedbackTable = `
       CREATE TABLE IF NOT EXISTS feedback (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -104,7 +97,6 @@ const createTables = () => {
       );
     `;
 
-    // Create all tables
     db.serialize(() => {
         db.run(usersTable, (err) => {
             if (err) {
