@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import validator from 'validator';
 import '../../styles/loginStyles/EmailOnlyLogin.css'; 
 
@@ -8,6 +9,7 @@ const EmailOnlyLogin = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [codeSent, setCodeSent] = useState(false);
+  const navigate = useNavigate();
 
   const handleEmailSubmit = async (e) => {
     e.preventDefault();

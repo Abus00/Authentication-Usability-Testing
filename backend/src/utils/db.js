@@ -91,7 +91,7 @@ const createTables = () => {
       CREATE TABLE IF NOT EXISTS feedback (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         user_email TEXT NOT NULL,
-        feedback_text TEXT NOT NULL,
+        feedback_text TEXT NOT NULL CHECK (LENGTH(feedback_text) <= 255),
         created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY (user_email) REFERENCES users(email)
       );

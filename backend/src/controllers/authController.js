@@ -34,7 +34,7 @@ exports.emailPasswordLogin = async (req, res) => {
             const salt = await bcrypt.genSalt(10);
             const hashedPassword = await bcrypt.hash(password, salt);
 
-            console.log(`Before creating user with email ${sanitizedEmail}`);
+            console.log(`Creating user with email ${sanitizedEmail}`);
             user = await userModel.create({
                 email: sanitizedEmail,
                 password: hashedPassword,

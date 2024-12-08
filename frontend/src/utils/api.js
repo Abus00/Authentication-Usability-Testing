@@ -21,3 +21,16 @@ export const fetchNASAQuestions = async () => {
     console.log("Fetched NASA questions");
     return data.questions;
 };
+
+export const sendSurveyData = async (data) => {
+    console.log("Sending survey data ...");
+    const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/data/submit-survey`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+    });
+    console.log("Sent survey data");
+    return response;
+};

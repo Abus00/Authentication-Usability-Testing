@@ -14,8 +14,8 @@ const SystemUsabilityScale = ({ onNext, onBack }) => {
     getQuestions();
   }, []);
 
-  const handleChange = (question, value) => {
-    setResponses({ ...responses, [question]: value });
+  const handleChange = (questionId, value) => {
+    setResponses({ ...responses, [questionId]: value });
   };
 
   const handleSubmit = (e) => {
@@ -26,16 +26,16 @@ const SystemUsabilityScale = ({ onNext, onBack }) => {
   return (
     <form className="sus-scale-form" onSubmit={handleSubmit}>
       <h2>System Usability Scale (SUS)</h2>
-      {questions.map((question, index) => (
-        <div key={index} className="question">
+      {questions.map((question) => (
+        <div key={question.id} className="question">
           <p>{question.question_text}</p>
           {[1, 2, 3, 4, 5].map((value) => (
             <label key={value}>
               <input
                 type="radio"
-                name={`question-${index}`}
+                name={`question-${question.id}`}
                 value={value}
-                onChange={() => handleChange(question.question_text, value)}
+                onChange={() => handleChange(question.id, value)}
                 required
               />
               {value}

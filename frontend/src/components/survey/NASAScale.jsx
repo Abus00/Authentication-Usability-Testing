@@ -14,8 +14,8 @@ const NASAScale = ({ onNext, onBack }) => {
     getQuestions();
   }, []);
 
-  const handleChange = (dimension, value) => {
-    setResponses({ ...responses, [dimension]: value });
+  const handleChange = (questionId, value) => {
+    setResponses({ ...responses, [questionId]: value });
   };
 
   const handleSubmit = (e) => {
@@ -26,16 +26,16 @@ const NASAScale = ({ onNext, onBack }) => {
   return (
     <form className="nasa-scale-form" onSubmit={handleSubmit}>
       <h2>NASA Task Load Index (NASA-TLX)</h2>
-      {questions.map((question, index) => (
-        <div key={index} className="dimension">
+      {questions.map((question) => (
+        <div key={question.id} className="dimension">
           <p>{question.question_text}</p>
           {[1, 2, 3, 4, 5, 6, 7].map((value) => (
             <label key={value}>
               <input
                 type="radio"
-                name={`dimension-${index}`}
+                name={`dimension-${question.id}`}
                 value={value}
-                onChange={() => handleChange(question.question_text, value)}
+                onChange={() => handleChange(question.id, value)}
                 required
               />
               {value}

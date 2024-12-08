@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import validator from 'validator';
+import { useNavigate } from 'react-router-dom';
 import '../../styles/loginStyles/EmailPasswordLogin.css'; 
 
 const EmailPasswordLogin = () => {
@@ -8,6 +9,7 @@ const EmailPasswordLogin = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
