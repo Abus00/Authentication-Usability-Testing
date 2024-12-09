@@ -1,17 +1,14 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { useEffect } from 'react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import HelloPage from "./pages/HelloPage";
 import CalibrationPage from "./pages/CalibrationPage";
 import LoginPage from "./pages/LoginPage";
 import SurveyContainer from "./pages/SurveyContainer";
 
-
-import './App.css'
+import './App.css';
 
 function App() {
-  
   const [isTrackingEye, setIsTrackingEye] = useState(false);
 
   return (
@@ -25,7 +22,7 @@ function App() {
         </Routes>
       </Router>
     </>
-  )
+  );
 }
 
 export default App;
