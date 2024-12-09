@@ -40,8 +40,10 @@ exports.getNASAQuestions = (req, res) => {
 };
 
 exports.submitSurveyData = (req, res) => {
-  const { personalInfo, likert, sus, nasa, feedback, hasFeedback, email } = req.body;
-  console.log("The recieved data looks like this: ");
+  const { personalInfo, likert, sus, nasa, feedback, hasFeedback } = req.body;
+  const email = personalInfo.email;
+  console.log("\n-----------------------------");
+  console.log("The received data looks like this: ");
   console.log("Personal Info: ", personalInfo);
   console.log("Likert: ", likert);
   console.log("SUS: ", sus);
@@ -49,6 +51,7 @@ exports.submitSurveyData = (req, res) => {
   console.log("Feedback: ", feedback);
   console.log("Has Feedback: ", hasFeedback);
   console.log("Email: ", email);
+  console.log("-----------------------------\n");
 
   db.serialize(() => {
     const insertFeedback = `
@@ -104,7 +107,8 @@ exports.submitSurveyData = (req, res) => {
         }
       });
     });
-
+    
+    console.log("Survey data stored successfully");
     res.status(200).json({ message: "Survey data submitted successfully" });
   });
 };

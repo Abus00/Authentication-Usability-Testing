@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 export default function PersonalInfoForm({ onNext, email }) {
   const [formData, setFormData] = useState({
@@ -7,6 +7,10 @@ export default function PersonalInfoForm({ onNext, email }) {
     age: "",
     gender: "",
   });
+
+  useEffect(() => {
+    setFormData((prevData) => ({ ...prevData, email }));
+  }, [email]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
