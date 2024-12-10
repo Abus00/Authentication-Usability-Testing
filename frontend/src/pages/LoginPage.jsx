@@ -3,9 +3,10 @@ import EmailOnlyLogin from "../components/login/EmailOnlyLogin";
 import EmailPasswordLogin from "../components/login/EmailPasswordLogin";
 import "../styles/loginStyles/LoginPage.css";
 
-export default function LoginPage({ isTrackingEye, setIsTrackingEye }) {
+export default function LoginPage({ isTrackingEye, setIsTrackingEye, setEyeTrackingData }) {
   const [choseLoginDisplay, setChoseLoginDisplay] = useState(true);
   const [chosenOption, setChosenOption] = useState(null);
+  const [loginOptions, setLoginOptions] = useState(null); 
   const options = ["emailOnly", "emailPassword"];
 
   useEffect(() => {
@@ -15,12 +16,15 @@ export default function LoginPage({ isTrackingEye, setIsTrackingEye }) {
           await window.webgazer
             .setGazeListener((data) => {
               if (!data) return;
+              setEyeTrackingData((prevData) => [
+                ...prevData,
+                { x: data.x, y: data.y },
+              ]);
               console.log(`Gaze prediction: x=${data.x}, y=${data.y}`);
             })
             .showVideo(false)
             .showFaceOverlay(false)
             .begin();
-
         } catch (error) {
           console.error("Error initializing WebGazer:", error);
         }
@@ -48,7 +52,21 @@ export default function LoginPage({ isTrackingEye, setIsTrackingEye }) {
         }
       }
     };
-  }, [isTrackingEye, setIsTrackingEye]);
+  }, []);
+
+  useEffect(() => {
+    const chooseTwoLoginOptions = () => {
+      const randomOption1 = Math.floor(Math.random() * options.length);
+      let randomOption2;
+      do {
+        randomOption2 = Math.floor(Math.random() * options.length);
+      } while (randomOption1 === randomOption2);
+
+      return [options[randomOption1], options[randomOption2]];
+    };
+
+    setLoginOptions(chooseTwoLoginOptions());
+  }, []); 
 
   const optionToChoice = (option) => {
     switch (option) {
@@ -74,23 +92,15 @@ export default function LoginPage({ isTrackingEye, setIsTrackingEye }) {
     }
   };
 
-  const chooseTwoLoginOptions = () => {
-    const randomOption1 = Math.floor(Math.random() * options.length);
-    let randomOption2;
-    do {
-      randomOption2 = Math.floor(Math.random() * options.length);
-    } while (randomOption1 === randomOption2);
-
-    return [options[randomOption1], options[randomOption2]];
-  };
-
   const handleLoginChoice = (option) => {
     optionToChoice(option);
     setChoseLoginDisplay(false);
   };
 
   const displayTwoLoginOptions = () => {
-    const [option1, option2] = chooseTwoLoginOptions();
+    if (!loginOptions) return null; 
+
+    const [option1, option2] = loginOptions;
 
     return (
       <div className="login-options-container">

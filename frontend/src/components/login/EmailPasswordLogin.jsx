@@ -38,7 +38,7 @@ const EmailPasswordLogin = () => {
       localStorage.setItem('token', data.token);
 
       //TODO
-      navigate('/survey', { state: { email } });
+      navigate('/survey', { state: { email} });
     } catch (err) {
       setError(err.message);
     } finally {

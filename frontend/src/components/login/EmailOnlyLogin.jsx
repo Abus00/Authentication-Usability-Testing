@@ -22,7 +22,7 @@ const EmailOnlyLogin = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ emailAddress: email }),
+        body: JSON.stringify({ emailAddress: email}), 
       });
 
       if (!response.ok) {
@@ -51,7 +51,7 @@ const EmailOnlyLogin = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email, code: verificationCode }),
+        body: JSON.stringify({ email, code: verificationCode}),
       });
 
       if (!response.ok) {

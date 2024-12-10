@@ -5,19 +5,22 @@ import SUSScale from "../components/survey/SystemUsabilityScale";
 import NASAScale from "../components/survey/NASAScale";
 import { sendSurveyData } from "../utils/api";
 
-export default function SurveyContainer({ isTrackingEye, email }) {
+export default function SurveyContainer({ isTrackingEye, eyeTrackingData, email }) {
+
+  console.log("The current eye tracking data is:", eyeTrackingData);
+
   const [step, setStep] = useState(0);
+  const [feedback, setFeedback] = useState("");
   const [surveyData, setSurveyData] = useState({
     personalInfo: {},
     likert: {},
     sus: {},
     nasa: {},
     isTrackingEye: isTrackingEye,
-    eyeTrackingData: {},
+    eyeTrackingData: eyeTrackingData || [],
     feedback: "",
     hasFeedback: false,
   });
-  const [feedback, setFeedback] = useState("");
 
   const handleNext = (formData) => {
     const updatedData = { ...surveyData };

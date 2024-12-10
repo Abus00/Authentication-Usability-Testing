@@ -10,6 +10,7 @@ import './App.css';
 
 function App() {
   const [isTrackingEye, setIsTrackingEye] = useState(false);
+  const [eyeTrackingData, setEyeTrackingData] = useState([]);
 
   return (
     <>
@@ -17,8 +18,8 @@ function App() {
         <Routes>
           <Route path="/" element={<HelloPage setIsTrackingEye={setIsTrackingEye} />} />
           <Route path="/calibration" element={<CalibrationPage setIsTrackingEye={setIsTrackingEye} />} />
-          <Route path="/login" element={<LoginPage isTrackingEye={isTrackingEye} setIsTrackingEye={setIsTrackingEye}/>} />
-          <Route path="/survey" element={<SurveyContainer isTrackingEye={isTrackingEye} />} />
+          <Route path="/login" element={<LoginPage isTrackingEye={isTrackingEye} setIsTrackingEye={setIsTrackingEye} setEyeTrackingData={setEyeTrackingData} />} />
+          <Route path="/survey" element={<SurveyContainer isTrackingEye={isTrackingEye} eyeTrackingData={eyeTrackingData} />} />
         </Routes>
       </Router>
     </>
