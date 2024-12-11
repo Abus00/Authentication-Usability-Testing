@@ -33,6 +33,33 @@ const createTables = () => {
       );
     `;
 
+    const surveyTable = `
+      CREATE TABLE IF NOT EXISTS survey (
+        id PRIMARY KEY AUTOINCREMENT,
+        user_email TEXT NOT NULL,
+        chosen_authentication_method TEXT NOT NULL,
+        FOREIGN KEY (user_email) REFERENCES users(email)
+      );
+    `;
+
+    const eyeTrackingDataTable = `
+      CREATE TABLE IF NOT EXISTS eye_tracking_data (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        survey_id INTEGER NOT NULL,
+        data BLOB NOT NULL,
+        FOREIGN KEY (survey_id) REFERENCES survey(id)
+      );
+    `;
+
+    const timeTrackingDataTable = `
+      CREATE TABLE IF NOT EXISTS time_tracking_data (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        survey_id INTEGER NOT NULL,
+        time_spent INTEGER NOT NULL,
+        FOREIGN KEY (survey_id) REFERENCES survey(id)
+      );
+    `;
+
     const likertQuestionsTable = `
       CREATE TABLE IF NOT EXISTS likert_questions (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -43,10 +70,10 @@ const createTables = () => {
     const likertResponsesTable = `
       CREATE TABLE IF NOT EXISTS likert_responses (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        user_email TEXT NOT NULL,
+        survey_id INTEGER NOT NULL,
         question_id INTEGER NOT NULL,
         response INTEGER CHECK (response BETWEEN 1 AND 5),
-        FOREIGN KEY (user_email) REFERENCES users(email),
+        FOREIGN KEY (survey_id) REFERENCES survey(id),
         FOREIGN KEY (question_id) REFERENCES likert_questions(id)
       );
     `;
@@ -61,10 +88,10 @@ const createTables = () => {
     const susResponsesTable = `
       CREATE TABLE IF NOT EXISTS sus_responses (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        user_email TEXT NOT NULL,
+        survey_id INTEGER NOT NULL,
         question_id INTEGER NOT NULL,
         response INTEGER CHECK (response BETWEEN 1 AND 5),
-        FOREIGN KEY (user_email) REFERENCES users(email),
+        FOREIGN KEY (survey_id) REFERENCES survey(id),
         FOREIGN KEY (question_id) REFERENCES sus_questions(id)
       );
     `;
@@ -79,10 +106,10 @@ const createTables = () => {
     const nasaResponsesTable = `
       CREATE TABLE IF NOT EXISTS nasa_responses (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        user_email TEXT NOT NULL,
+        survey_id INTEGER NOT NULL,
         question_id INTEGER NOT NULL,
         response INTEGER CHECK (response BETWEEN 1 AND 100),
-        FOREIGN KEY (user_email) REFERENCES users(email),
+        FOREIGN KEY (survey_id) REFERENCES survey(id),
         FOREIGN KEY (question_id) REFERENCES nasa_questions(id)
       );
     `;
@@ -90,10 +117,9 @@ const createTables = () => {
     const feedbackTable = `
       CREATE TABLE IF NOT EXISTS feedback (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        user_email TEXT NOT NULL,
-        feedback_text TEXT NOT NULL CHECK (LENGTH(feedback_text) <= 255),
-        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-        FOREIGN KEY (user_email) REFERENCES users(email)
+        survey_id INTEGER NOT NULL,
+        feedback_text TEXT,
+        FOREIGN KEY (survey_id) REFERENCES survey(id)
       );
     `;
 
@@ -111,6 +137,30 @@ const createTables = () => {
                 console.error("Error creating verification codes table:", err.message);
             } else {
                 console.log("Verification codes table is ready.");
+            }
+        });
+
+        db.run(surveyTable, (err) => {
+            if (err) {
+                console.error("Error creating survey table:", err.message);
+            } else {
+                console.log("Survey table is ready.");
+            }
+        }); 
+
+        db.run(eyeTrackingDataTable, (err) => {
+            if (err) {
+                console.error("Error creating eye_tracking_data table:", err.message);
+            } else {
+                console.log("Eye tracking data table is ready.");
+            }
+        });
+
+        db.run(timeTrackingDataTable, (err) => {
+            if (err) {
+                console.error("Error creating time_tracking_data table:", err.message);
+            } else {
+                console.log("Time tracking data table is ready.");
             }
         });
 

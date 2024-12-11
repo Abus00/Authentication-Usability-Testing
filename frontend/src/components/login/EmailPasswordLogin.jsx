@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import validator from 'validator';
 import { useNavigate } from 'react-router-dom';
 import '../../styles/loginStyles/EmailPasswordLogin.css'; 
@@ -10,6 +10,12 @@ const EmailPasswordLogin = () => {
   const [error, setError] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
+
+  const startTimeRef = useRef(null);
+
+  useEffect(() => {
+    startTimeRef.current = performance.now();
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -37,8 +43,11 @@ const EmailPasswordLogin = () => {
       console.log('Login successful:', data);
       localStorage.setItem('token', data.token);
 
-      //TODO
-      navigate('/survey', { state: { email} });
+      const endTime = performance.now();
+      const timeTakenSeconds = (endTime - startTimeRef.current) / 1000;
+      auth_method = "emailPassword";
+
+      navigate('/survey', { state: { email, timeData: { timeTakenSeconds }, chosen_authentication_method: auth_method } });
     } catch (err) {
       setError(err.message);
     } finally {

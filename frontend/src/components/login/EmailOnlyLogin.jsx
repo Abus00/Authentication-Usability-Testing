@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import validator from 'validator';
 import '../../styles/loginStyles/EmailOnlyLogin.css'; 
@@ -10,6 +10,12 @@ const EmailOnlyLogin = () => {
   const [error, setError] = useState(null);
   const [codeSent, setCodeSent] = useState(false);
   const navigate = useNavigate();
+  //time data
+  const startTimeRef = useRef(null);
+
+  useEffect(() => {
+    startTimeRef.current = performance.now();
+  }, []);
 
   const handleEmailSubmit = async (e) => {
     e.preventDefault();
@@ -63,8 +69,11 @@ const EmailOnlyLogin = () => {
       console.log('Verification successful:', data);
       localStorage.setItem('token', data.token);
 
-      //TODO go to survey page
-      navigate('/survey', { state: { email } });
+      const endTime = performance.now();
+      const timeTakenSeconds = (endTime - startTimeRef.current) / 1000;
+      auth_method = "emailOnly";
+
+      navigate('/survey', { state: { email, timeData: { timeTakenSeconds }, chosen_authentication_method: auth_method } });
     } catch (err) {
       setError(err.message);
       setVerificationCode('');

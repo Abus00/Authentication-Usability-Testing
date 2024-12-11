@@ -60,7 +60,7 @@ const createEmailOnly = async (email) => {
 };
 
 const updateVerificationCode = async (email, code) => {
-  const expiresAt = Date.now() + 15 * 60 * 1000; // 15 minutes from now in milliseconds
+  const expiresAt = Date.now() + 15 * 60 * 1000; 
   console.log(`Storing verification code: ${code} for email: ${email} with expiration: ${new Date(expiresAt).toISOString()}`);
   const query = `
     INSERT INTO verification_codes (email, code, expires_at)

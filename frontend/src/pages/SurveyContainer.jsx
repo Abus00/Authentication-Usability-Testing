@@ -5,9 +5,14 @@ import SUSScale from "../components/survey/SystemUsabilityScale";
 import NASAScale from "../components/survey/NASAScale";
 import { sendSurveyData } from "../utils/api";
 
-export default function SurveyContainer({ isTrackingEye, eyeTrackingData, email }) {
+import { useLocation } from "react-router-dom";
 
-  console.log("The current eye tracking data is:", eyeTrackingData);
+export default function SurveyContainer({ isTrackingEye, eyeTrackingData }) {
+  const location = useLocation();
+  const {email, timedData, chosen_authentication_method} = location.state;
+
+  console.log("The amount of seconds it took to complete the authentication is: ", timedData);
+  console.log("The chosen authentication method is: ", chosen_authentication_method);
 
   const [step, setStep] = useState(0);
   const [feedback, setFeedback] = useState("");
@@ -16,10 +21,12 @@ export default function SurveyContainer({ isTrackingEye, eyeTrackingData, email 
     likert: {},
     sus: {},
     nasa: {},
+    hasFeedback: false,
+    feedback: "",
     isTrackingEye: isTrackingEye,
     eyeTrackingData: eyeTrackingData || [],
-    feedback: "",
-    hasFeedback: false,
+    timeData: timedData,
+    chosen_authentication_method: chosen_authentication_method,
   });
 
   const handleNext = (formData) => {
