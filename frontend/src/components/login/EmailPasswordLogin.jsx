@@ -45,9 +45,10 @@ const EmailPasswordLogin = () => {
 
       const endTime = performance.now();
       const timeTakenSeconds = (endTime - startTimeRef.current) / 1000;
-      auth_method = "emailPassword";
+      console.log('Time taken to login within EmailPassword Component:', timeTakenSeconds);
+      let auth_method = "emailPassword";
 
-      navigate('/survey', { state: { email, timeData: { timeTakenSeconds }, chosen_authentication_method: auth_method } });
+      navigate('/survey', { state: { email, timeData: timeTakenSeconds, chosen_authentication_method: auth_method } });
     } catch (err) {
       setError(err.message);
     } finally {

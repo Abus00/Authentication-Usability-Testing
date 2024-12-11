@@ -9,9 +9,9 @@ import { useLocation } from "react-router-dom";
 
 export default function SurveyContainer({ isTrackingEye, eyeTrackingData }) {
   const location = useLocation();
-  const {email, timedData, chosen_authentication_method} = location.state;
+  const {email, timeData, chosen_authentication_method} = location.state;
 
-  console.log("The amount of seconds it took to complete the authentication is: ", timedData);
+  console.log("The amount of seconds it took to complete the authentication is: ", timeData);
   console.log("The chosen authentication method is: ", chosen_authentication_method);
 
   const [step, setStep] = useState(0);
@@ -25,7 +25,7 @@ export default function SurveyContainer({ isTrackingEye, eyeTrackingData }) {
     feedback: "",
     isTrackingEye: isTrackingEye,
     eyeTrackingData: eyeTrackingData || [],
-    timeData: timedData,
+    timeData: timeData,
     chosen_authentication_method: chosen_authentication_method,
   });
 

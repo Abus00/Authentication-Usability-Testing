@@ -46,7 +46,6 @@ exports.submitSurveyData = (req, res) => {
   console.log("The received data looks like this: ");
   console.log("Chosen Authentication Method: ", chosen_authentication_method);
   console.log("Personal Info: ", personalInfo);
-  console.log("Email: ", email);
   console.log("Likert: ", likert);
   console.log("SUS: ", sus);
   console.log("NASA: ", nasa);
@@ -58,6 +57,8 @@ exports.submitSurveyData = (req, res) => {
   console.log("-----------------------------\n");
 
   db.serialize(() => {
+    db.run("BEGIN TRANSACTION");
+
     const insertSurvey = `
       INSERT INTO survey (user_email, chosen_authentication_method)
       VALUES (?, ?)
@@ -65,8 +66,8 @@ exports.submitSurveyData = (req, res) => {
     db.run(insertSurvey, [email, chosen_authentication_method], function(err) {
       if (err) {
         console.error("Error inserting survey:", err.message);
-        res.status(500).json({ error: err.message });
-        return;
+        db.run("ROLLBACK");
+        return res.status(500).json({ error: "Failed to insert survey data" });
       }
 
       const surveyId = this.lastID;
@@ -76,11 +77,11 @@ exports.submitSurveyData = (req, res) => {
           INSERT INTO feedback (survey_id, feedback_text)
           VALUES (?, ?)
         `;
-        db.run(insertFeedback, [surveyId, feedback], (err) => {
+        db.run(insertFeedback, [surveyId, feedback], function(err) {
           if (err) {
             console.error("Error inserting feedback:", err.message);
-            res.status(500).json({ error: err.message });
-            return;
+            db.run("ROLLBACK");
+            return res.status(500).json({ error: "Failed to insert feedback" });
           }
         });
       }
@@ -90,11 +91,11 @@ exports.submitSurveyData = (req, res) => {
         VALUES (?, ?, ?)
       `;
       Object.keys(likert).forEach((questionId) => {
-        db.run(insertLikertResponse, [surveyId, questionId, likert[questionId]], (err) => {
+        db.run(insertLikertResponse, [surveyId, questionId, likert[questionId]], function(err) {
           if (err) {
             console.error("Error inserting likert response:", err.message);
-            res.status(500).json({ error: err.message });
-            return;
+            db.run("ROLLBACK");
+            return res.status(500).json({ error: "Failed to insert likert response" });
           }
         });
       });
@@ -104,11 +105,11 @@ exports.submitSurveyData = (req, res) => {
         VALUES (?, ?, ?)
       `;
       Object.keys(sus).forEach((questionId) => {
-        db.run(insertSUSResponse, [surveyId, questionId, sus[questionId]], (err) => {
+        db.run(insertSUSResponse, [surveyId, questionId, sus[questionId]], function(err) {
           if (err) {
             console.error("Error inserting sus response:", err.message);
-            res.status(500).json({ error: err.message });
-            return;
+            db.run("ROLLBACK");
+            return res.status(500).json({ error: "Failed to insert sus response" });
           }
         });
       });
@@ -118,11 +119,11 @@ exports.submitSurveyData = (req, res) => {
         VALUES (?, ?, ?)
       `;
       Object.keys(nasa).forEach((questionId) => {
-        db.run(insertNASAResponse, [surveyId, questionId, nasa[questionId]], (err) => {
+        db.run(insertNASAResponse, [surveyId, questionId, nasa[questionId]], function(err) {
           if (err) {
             console.error("Error inserting nasa response:", err.message);
-            res.status(500).json({ error: err.message });
-            return;
+            db.run("ROLLBACK");
+            return res.status(500).json({ error: "Failed to insert nasa response" });
           }
         });
       });
@@ -132,11 +133,11 @@ exports.submitSurveyData = (req, res) => {
           INSERT INTO eye_tracking_data (survey_id, data)
           VALUES (?, ?)
         `;
-        db.run(insertEyeTrackingData, [surveyId, eyeTrackingData], (err) => {
+        db.run(insertEyeTrackingData, [surveyId, eyeTrackingData], function(err) {
           if (err) {
             console.error("Error inserting eye tracking data:", err.message);
-            res.status(500).json({ error: err.message });
-            return;
+            db.run("ROLLBACK");
+            return res.status(500).json({ error: "Failed to insert eye tracking data" });
           }
         });
       }
@@ -145,16 +146,22 @@ exports.submitSurveyData = (req, res) => {
         INSERT INTO time_tracking_data (survey_id, time_spent)
         VALUES (?, ?)
       `;
-      db.run(insertTimeTrackingData, [surveyId, timeData], (err) => {
+      db.run(insertTimeTrackingData, [surveyId, timeData], function(err) {
         if (err) {
           console.error("Error inserting time tracking data:", err.message);
-          res.status(500).json({ error: err.message });
-          return;
+          db.run("ROLLBACK");
+          return res.status(500).json({ error: "Failed to insert time tracking data" });
         }
       });
 
-      console.log("Survey data stored successfully");
-      res.status(200).json({ message: "Survey data submitted successfully" });
+      db.run("COMMIT", function(err) {
+        if (err) {
+          console.error("Error committing transaction:", err.message);
+          return res.status(500).json({ error: "Failed to commit transaction" });
+        }
+        console.log("Survey data stored successfully");
+        res.status(200).json({ message: "Survey data submitted successfully" });
+      });
     });
   });
 };

@@ -35,7 +35,7 @@ const createTables = () => {
 
     const surveyTable = `
       CREATE TABLE IF NOT EXISTS survey (
-        id PRIMARY KEY AUTOINCREMENT,
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
         user_email TEXT NOT NULL,
         chosen_authentication_method TEXT NOT NULL,
         FOREIGN KEY (user_email) REFERENCES users(email)
@@ -222,6 +222,35 @@ const createTables = () => {
     });
 };
 
+const cleanupTables = (cleanup) => {
+  if (!cleanup) return;
+
+  const tables = [
+      "users",
+      "verification_codes",
+      "survey",
+      "eye_tracking_data",
+      "time_tracking_data",
+      "likert_responses",
+      "sus_responses",
+      "nasa_responses",
+      "feedback"
+  ];
+
+  db.serialize(() => {
+    tables.forEach((table) => {
+        db.run(`DROP TABLE IF EXISTS ${table}`, (err) => {
+            if (err) {
+                console.error(`Error dropping ${table} table:`, err.message);
+            } else {
+                console.log(`${table} table dropped.`);
+            }
+        });
+    });
+  });
+};
+
+cleanupTables(true);
 createTables();
 
-module.exports = db;
+module.exports = db; 

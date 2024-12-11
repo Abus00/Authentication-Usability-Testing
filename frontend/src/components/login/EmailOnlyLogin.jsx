@@ -71,9 +71,9 @@ const EmailOnlyLogin = () => {
 
       const endTime = performance.now();
       const timeTakenSeconds = (endTime - startTimeRef.current) / 1000;
-      auth_method = "emailOnly";
+      let auth_method = "emailOnly";
 
-      navigate('/survey', { state: { email, timeData: { timeTakenSeconds }, chosen_authentication_method: auth_method } });
+      navigate('/survey', { state: { email, timeData: timeTakenSeconds, chosen_authentication_method: auth_method } });
     } catch (err) {
       setError(err.message);
       setVerificationCode('');
