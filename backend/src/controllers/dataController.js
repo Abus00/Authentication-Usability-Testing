@@ -142,15 +142,19 @@ exports.submitSurveyData = (req, res) => {
         });
       }
 
-      const insertTimeTrackingData = `
-        INSERT INTO time_tracking_data (survey_id, time_spent)
+      const insertEyeTrackingData = `
+        INSERT INTO eye_tracking_data (survey_id, data)
         VALUES (?, ?)
       `;
-      db.run(insertTimeTrackingData, [surveyId, timeData], function(err) {
+        db.run(insertEyeTrackingData, [surveyId, JSON.stringify(eyeTrackingData)], function(err) {
         if (err) {
-          console.error("Error inserting time tracking data:", err.message);
+          console.error("Error inserting eye tracking data:", err.message);
+          if (err.message.includes("too large")) {
+            db.run("ROLLBACK");
+            return res.status(413).json({ error: "Eye tracking data is too large to insert" });
+          }
           db.run("ROLLBACK");
-          return res.status(500).json({ error: "Failed to insert time tracking data" });
+          return res.status(500).json({ error: "Failed to insert eye tracking data" });
         }
       });
 
