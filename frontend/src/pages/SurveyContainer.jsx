@@ -6,6 +6,7 @@ import NASAScale from "../components/survey/NASAScale";
 import { sendSurveyData } from "../utils/api";
 import { useLocation } from "react-router-dom";
 import '../styles/surveyStyles/SurveyContainer.css';
+import '../styles/surveyStyles/OpenEnded.css';
 
 export default function SurveyContainer({ isTrackingEye, eyeTrackingData }) {
   const location = useLocation();
@@ -64,22 +65,22 @@ export default function SurveyContainer({ isTrackingEye, eyeTrackingData }) {
         </div>
       )}
       {step === 1 && (
-        <div className="form-wrapper">
+        <div className="questionnaire-wrapper">
           <LikertScale onNext={handleNext} onBack={handleBack} />
         </div>
       )}
       {step === 2 && (
-        <div className="form-wrapper">
+        <div className="questionnaire-wrapper">
           <SUSScale onNext={handleNext} onBack={handleBack} />
         </div>
       )}
       {step === 3 && (
-        <div className="form-wrapper">
+        <div className="questionnaire-wrapper">
           <NASAScale onNext={handleNext} onBack={handleBack} />
         </div>
       )}
       {step === 4 && (
-        <div className="form-wrapper">
+        <div className="open-ended-form">
           <label>
             Additional Feedback (max 255 characters):
             <textarea
@@ -89,12 +90,14 @@ export default function SurveyContainer({ isTrackingEye, eyeTrackingData }) {
               placeholder="Enter your feedback here..."
             />
           </label>
-          <button className="submit-button" onClick={handleSubmit}>
-            Submit Survey
-          </button>
-          <button className="back-button" onClick={handleBack}>
-            Back
-          </button>
+          <div className="button-container">
+            <button className="back-button" onClick={handleBack}>
+              Back
+            </button>
+            <button className="submit-button" onClick={handleSubmit}>
+              Submit Survey
+            </button>
+          </div>
         </div>
       )}
     </div>

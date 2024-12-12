@@ -24,13 +24,15 @@ const NASAScale = ({ onNext, onBack }) => {
     onNext(responses);
   };
 
+  const descriptions = ["Very Low", "Low", "Somewhat Low", "Neutral", "Somewhat High", "High", "Very High"];
+
   return (
     <form className="survey-form" onSubmit={handleSubmit}>
       <h2>NASA Task Load Index (NASA-TLX)</h2>
       {questions.map((question) => (
         <div key={question.id} className="dimension">
           <p>{question.question_text}</p>
-          {[1, 2, 3, 4, 5, 6, 7].map((value) => (
+          {[1, 2, 3, 4, 5, 6, 7].map((value, index) => (
             <label key={value}>
               <input
                 type="radio"
@@ -39,7 +41,7 @@ const NASAScale = ({ onNext, onBack }) => {
                 onChange={() => handleChange(question.id, value)}
                 required
               />
-              {value}
+              {value} - {descriptions[index]}
             </label>
           ))}
         </div>

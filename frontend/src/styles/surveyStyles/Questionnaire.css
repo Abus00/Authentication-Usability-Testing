@@ -1,11 +1,29 @@
 .survey-form {
   max-width: 600px;
+  height: 700px; /* Increased height */
   margin: 0 auto;
   padding: 20px;
-  border: 1px solid #ccc;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   background-color: #f9f9f9;
+  overflow-y: auto; /* Make the form scrollable */
+  border: 1px solid #ccc;
+}
+
+.survey-form::-webkit-scrollbar {
+  width: 12px; /* Width of the scrollbar */
+}
+
+.survey-form::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Track color */
+}
+
+.survey-form::-webkit-scrollbar-thumb {
+  background: #888; /* Thumb color */
+}
+
+.survey-form::-webkit-scrollbar-thumb:hover {
+  background: #555; /* Thumb color on hover */
 }
 
 .survey-form h2 {

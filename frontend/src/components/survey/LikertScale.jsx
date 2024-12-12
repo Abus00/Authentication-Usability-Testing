@@ -24,13 +24,15 @@ const LikertScale = ({ onNext, onBack }) => {
     onNext(responses);
   };
 
+  const descriptions = ["Strongly Disagree", "Disagree", "Neutral", "Agree", "Strongly Agree"];
+
   return (
     <form className="survey-form" onSubmit={handleSubmit}>
       <h2>Likert Scale</h2>
       {questions.map((question) => (
         <div key={question.id} className="question">
           <p>{question.question_text}</p>
-          {[1, 2, 3, 4, 5].map((value) => (
+          {[1, 2, 3, 4, 5].map((value, index) => (
             <label key={value}>
               <input
                 type="radio"
@@ -39,7 +41,7 @@ const LikertScale = ({ onNext, onBack }) => {
                 onChange={() => handleChange(question.id, value)}
                 required
               />
-              {value}
+              {value} - {descriptions[index]}
             </label>
           ))}
         </div>
