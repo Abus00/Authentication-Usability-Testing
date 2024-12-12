@@ -14,7 +14,7 @@
   animation-delay: 0.5s;
   letter-spacing: 1px; /* Reduced letter spacing */
   text-transform: uppercase;
-  font-style: italic;
+  /* font-style: italic; */
 }
 
 .hello-page-container h2 {

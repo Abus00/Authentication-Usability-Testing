@@ -40,7 +40,7 @@ h1 {
   font-size: 4em; /* Increased font size */
   letter-spacing: 1px; /* Reduced letter spacing */
   text-transform: uppercase;
-  font-style: italic;
+  /* font-style: italic; */
 }
 
 h2 {

@@ -24,13 +24,26 @@ export const fetchNASAQuestions = async () => {
 
 export const sendSurveyData = async (data) => {
     console.log("Sending survey data ...");
+
+    const token = localStorage.getItem("token");
+    if (!token) {
+        throw new Error("No authentication token found. Please log in.");
+    }
+
     const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/data/submit-survey`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}` 
         },
         body: JSON.stringify(data),
     });
-    console.log("Sent survey data");
-    return response;
+
+    if (!response.ok) {
+        const errorDetails = await response.json();
+        throw new Error(`Failed to submit survey: ${errorDetails.message || response.statusText}`);
+    }
+
+    console.log("Sent survey data successfully");
+    return response.json();
 };

@@ -1,4 +1,5 @@
 const db = require("../utils/db");
+const { verifyAuthToken} = require("../utils/jwtUtils");
 
 exports.getLikertQuestions = (req, res) => {
   console.log("Received request to get likert questions");
@@ -40,20 +41,38 @@ exports.getNASAQuestions = (req, res) => {
 };
 
 exports.submitSurveyData = (req, res) => {
+
+  console.log("-----------------------------");
+  console.log("Received request to submit survey data");
+  console.log("Request headers: ", req.headers);
+
+  const authHeader = req.headers.authorization;
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    return res.status(401).json({ error: "Unauthorized: No token provided" });
+  }
+  const token = authHeader.split(" ")[1];
+  console.log("Received token:", token);
+
+  let decoded;
+  try {
+    decoded = verifyAuthToken(token);
+  } catch (err) {
+    console.error("Error verifying token:", err.message);
+    return res.status(401).json({ error: "Unauthorized: Invalid or expired token" });
+  }
+
+  const tokenEmail = decoded.email;
+
   const { personalInfo, likert, sus, nasa, hasFeedback, feedback, isTrackingEye, eyeTrackingData, timeData, chosen_authentication_method } = req.body;
   const email = personalInfo.email;
+
+  if (tokenEmail !== email) {
+    return res.status(403).json({ error: "Forbidden: Email mismatch" });
+  }
+
   console.log("\n-----------------------------");
-  console.log("The received data looks like this: ");
-  console.log("Chosen Authentication Method: ", chosen_authentication_method);
-  console.log("Personal Info: ", personalInfo);
-  console.log("Likert: ", likert);
-  console.log("SUS: ", sus);
-  console.log("NASA: ", nasa);
-  console.log("Has Feedback: ", hasFeedback);
-  console.log("Feedback: ", feedback);
-  console.log("Is Tracking Eye: ", isTrackingEye);
-  console.log("Eye Tracking Data: ", eyeTrackingData);
-  console.log("Time Data: ", timeData);
+  console.log("Request data: \n");
+  console.log(req.body);
   console.log("-----------------------------\n");
 
   db.serialize(() => {

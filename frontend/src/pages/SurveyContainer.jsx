@@ -4,17 +4,14 @@ import LikertScale from "../components/survey/LikertScale";
 import SUSScale from "../components/survey/SystemUsabilityScale";
 import NASAScale from "../components/survey/NASAScale";
 import { sendSurveyData } from "../utils/api";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import '../styles/surveyStyles/SurveyContainer.css';
 import '../styles/surveyStyles/OpenEnded.css';
 
 export default function SurveyContainer({ isTrackingEye, eyeTrackingData }) {
-  const location = useLocation();
-  const { email, timeData, chosen_authentication_method } = location.state;
-
-  console.log("The amount of seconds it took to complete the authentication is: ", timeData);
-  console.log("The chosen authentication method is: ", chosen_authentication_method);
-
+  const [email, setEmail] = useState("");
+  const [timeData, setTimeData] = useState(0);
+  const [chosen_authentication_method, setChosen_authentication_method] = useState("");
   const [step, setStep] = useState(0);
   const [feedback, setFeedback] = useState("");
   const [surveyData, setSurveyData] = useState({
@@ -29,6 +26,22 @@ export default function SurveyContainer({ isTrackingEye, eyeTrackingData }) {
     timeData: timeData,
     chosen_authentication_method: chosen_authentication_method,
   });
+
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (location.state && location.state.email && location.state.timeData && location.state.chosen_authentication_method) {
+      setEmail(location.state.email);
+      setTimeData(location.state.timeData);
+      setChosen_authentication_method(location.state.chosen_authentication_method);
+      console.log("The amount of seconds it took to complete the authentication is: ", location.state.timeData);
+      console.log("The chosen authentication method is: ", location.state.chosen_authentication_method);
+    } else {
+      alert("Please go back to the login page and login again.");
+      navigate("/login");
+    }
+  }, [location, navigate]);
 
   const handleNext = (formData) => {
     const updatedData = { ...surveyData };
@@ -48,12 +61,13 @@ export default function SurveyContainer({ isTrackingEye, eyeTrackingData }) {
   const handleSubmit = async () => {
     const updatedData = { ...surveyData, feedback, hasFeedback: feedback.length > 0 };
     console.log("DEBUG: Survey Data to Send:", updatedData);
+
     try {
       await sendSurveyData(updatedData);
       alert("Survey submitted!");
     } catch (error) {
-      console.error("Error submitting survey:", error);
-      alert("Failed to submit survey.");
+      console.error("Error submitting survey:", error.message);
+      alert(`Failed to submit survey: ${error.message}`);
     }
   };
 
