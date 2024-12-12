@@ -1,0 +1,63 @@
+.login-page-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  height: 100vh;
+  text-align: center;
+  padding-top: 2rem;
+}
+
+.login-title {
+  font-size: 2.5em;
+  margin-bottom: 20px;
+  letter-spacing: -1.0px;
+  opacity: 1;
+  animation: none;
+}
+
+.login-instruction {
+  font-size: 1.2em;
+  margin-bottom: 40px;
+  opacity: 1;
+  animation: none;
+}
+
+.login-options-container {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  opacity: 1;
+  animation: none;
+}
+
+.login-option-box {
+  width: 200px;
+  padding: 20px;
+  background-color: white;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: transform 0.2s, background-color 0.2s;
+  opacity: 1;
+  animation: none;
+}
+
+.login-option-box:hover {
+  transform: translateY(-3px);
+  background-color: #f0f0f0;
+}
+
+.login-option-box h3 {
+  margin: 0;
+  font-size: 1.2em;
+  opacity: 1;
+  animation: none;
+}
+
+.login-option-box p {
+  margin-top: 10px;
+  font-size: 0.9em;
+  opacity: 1;
+  animation: none;
+}

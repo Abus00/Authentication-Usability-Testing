@@ -84,9 +84,9 @@ export default function LoginPage({ isTrackingEye, setIsTrackingEye, setEyeTrack
   const choiceToDescriptionText = (option) => {
     switch (option) {
       case "emailOnly":
-        return "Email Only Login. This option requires you to enter your email address only. Afterwards you will receive an email with a code to login.";
+        return "Login with Email Only. You will receive a verification code via email.";
       case "emailPassword":
-        return "The classical Email and Password Login";
+        return "Login with Email and Password.";
       default:
         return "No option selected";
     }
@@ -104,12 +104,12 @@ export default function LoginPage({ isTrackingEye, setIsTrackingEye, setEyeTrack
 
     return (
       <div className="login-options-container">
-        <button onClick={() => handleLoginChoice(option1)} className="login-option-button">
-          {choiceToDescriptionText(option1)}
-        </button>
-        <button onClick={() => handleLoginChoice(option2)} className="login-option-button">
-          {choiceToDescriptionText(option2)}
-        </button>
+        <div className="login-option-box" onClick={() => handleLoginChoice(option1)}>
+          <h3>{choiceToDescriptionText(option1)}</h3>
+        </div>
+        <div className="login-option-box" onClick={() => handleLoginChoice(option2)}>
+          <h3>{choiceToDescriptionText(option2)}</h3>
+        </div>
       </div>
     );
   };
@@ -118,9 +118,9 @@ export default function LoginPage({ isTrackingEye, setIsTrackingEye, setEyeTrack
     <div className="login-page-container">
       {choseLoginDisplay ? (
         <>
-          <p className="login-title">Login Page</p>
+          <p className="login-title">Sign in</p>
           <p className="login-instruction">
-            To continue, please select one of the authentication processes provided
+            To continue, please select one of the authentication processes provided:
           </p>
           {displayTwoLoginOptions()}
         </>

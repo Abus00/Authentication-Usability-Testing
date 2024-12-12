@@ -1,0 +1,44 @@
+/* Container styles */
+.hello-page-container {
+  text-align: center;
+  padding: 2rem;
+}
+
+.hello-page-container h1, .hello-page-container h2, .hello-page-container p, .hello-page-container button {
+  opacity: 0;
+  animation: fadeIn 1s forwards;
+}
+
+.hello-page-container h1 {
+  font-size: 4em; /* Increased font size */
+  animation-delay: 0.5s;
+  letter-spacing: 1px; /* Reduced letter spacing */
+  text-transform: uppercase;
+  font-style: italic;
+}
+
+.hello-page-container h2 {
+  font-size: 2.5em;
+  animation-delay: 1s;
+}
+
+.hello-page-container p {
+  font-size: 1.5em;
+  animation-delay: 1.5s;
+}
+
+.hello-page-container button {
+  animation-delay: 2s;
+  margin: 10px;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateX(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}

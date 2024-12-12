@@ -10,7 +10,6 @@ const EmailOnlyLogin = () => {
   const [error, setError] = useState(null);
   const [codeSent, setCodeSent] = useState(false);
   const navigate = useNavigate();
-  //time data
   const startTimeRef = useRef(null);
 
   useEffect(() => {

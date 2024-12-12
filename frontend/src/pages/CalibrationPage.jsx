@@ -107,6 +107,7 @@ export default function CalibrationPage({ setIsTrackingEye }) {
     <div className="calibration-page">
       {showPopup && (
         <CalibrationPopUp
+          topmessage={"What to do?"}
           message="Please click on each red box 3 times, until it goes from red to green and has a little check-symbol in it! Make sure to always look to where your mouse is pointing, so that the calibration is accurate."
           buttonText="Yes, Understood"
           onClose={() => setShowPopup(false)}
@@ -126,7 +127,8 @@ export default function CalibrationPage({ setIsTrackingEye }) {
 
       {allCalibrated && (
         <CalibrationPopUp
-          message="Calibration complete! You can now proceed to the login page."
+          topmessage="Calibration complete! 🎉"
+          message="You can now proceed to the login page."
           buttonText="Proceed to Login"
           onClose={handleProceedToLogin}
         />

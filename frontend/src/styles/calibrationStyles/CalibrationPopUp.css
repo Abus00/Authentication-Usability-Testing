@@ -1,0 +1,48 @@
+.calibration-popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 300px;
+  padding: 20px;
+  background-color: white;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3); 
+  border-radius: 10px;
+  text-align: center;
+  z-index: 1000;
+  color: black;
+}
+
+.popup-button {
+  margin-top: 10px;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: transform 0.2s, background-color 0.2s;
+  opacity: 1; 
+  animation: none; 
+}
+
+.popup-button:hover {
+  transform: translateY(-3px);
+  background-color: #0056b3;
+}
+
+.popup-button:focus {
+  outline: none;
+}
+
+.calibration-popup h2 {
+  font-size: 1.5em; 
+  opacity: 1; 
+  animation: none; 
+}
+
+.calibration-popup p {
+  font-size: 1em; 
+  opacity: 1; 
+  animation: none; 
+}
