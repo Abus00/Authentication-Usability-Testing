@@ -97,7 +97,7 @@ const EmailOnlyLogin = () => {
             onChange={(e) => setEmail(e.target.value)}
             required
             className="email-only-login-input"
-            placeholder="Enter your email"
+            placeholder="example.email@gmail.com"
           />
           <button
             type="submit"

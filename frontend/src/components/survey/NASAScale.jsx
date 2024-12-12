@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { fetchNASAQuestions } from "../../utils/api";
+import '../../styles/surveyStyles/Questionnaire.css';
 
 const NASAScale = ({ onNext, onBack }) => {
   const [responses, setResponses] = useState({});
@@ -24,7 +25,7 @@ const NASAScale = ({ onNext, onBack }) => {
   };
 
   return (
-    <form className="nasa-scale-form" onSubmit={handleSubmit}>
+    <form className="survey-form" onSubmit={handleSubmit}>
       <h2>NASA Task Load Index (NASA-TLX)</h2>
       {questions.map((question) => (
         <div key={question.id} className="dimension">
@@ -43,7 +44,7 @@ const NASAScale = ({ onNext, onBack }) => {
           ))}
         </div>
       ))}
-      <button type="button" onClick={onBack}>Back</button>
+      <button type="button" className="back-button" onClick={onBack}>Back</button>
       <button type="submit">Next</button>
     </form>
   );

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { fetchSUSQuestions } from "../../utils/api";
+import '../../styles/surveyStyles/Questionnaire.css';
 
 const SystemUsabilityScale = ({ onNext, onBack }) => {
   const [responses, setResponses] = useState({});
@@ -24,7 +25,7 @@ const SystemUsabilityScale = ({ onNext, onBack }) => {
   };
 
   return (
-    <form className="sus-scale-form" onSubmit={handleSubmit}>
+    <form className="survey-form" onSubmit={handleSubmit}>
       <h2>System Usability Scale (SUS)</h2>
       {questions.map((question) => (
         <div key={question.id} className="question">
@@ -43,7 +44,7 @@ const SystemUsabilityScale = ({ onNext, onBack }) => {
           ))}
         </div>
       ))}
-      <button type="button" onClick={onBack}>Back</button>
+      <button type="button" className="back-button" onClick={onBack}>Back</button>
       <button type="submit">Next</button>
     </form>
   );

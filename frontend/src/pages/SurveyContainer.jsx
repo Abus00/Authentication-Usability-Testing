@@ -4,12 +4,12 @@ import LikertScale from "../components/survey/LikertScale";
 import SUSScale from "../components/survey/SystemUsabilityScale";
 import NASAScale from "../components/survey/NASAScale";
 import { sendSurveyData } from "../utils/api";
-
 import { useLocation } from "react-router-dom";
+import '../styles/surveyStyles/SurveyContainer.css';
 
 export default function SurveyContainer({ isTrackingEye, eyeTrackingData }) {
   const location = useLocation();
-  const {email, timeData, chosen_authentication_method} = location.state;
+  const { email, timeData, chosen_authentication_method } = location.state;
 
   console.log("The amount of seconds it took to complete the authentication is: ", timeData);
   console.log("The chosen authentication method is: ", chosen_authentication_method);
@@ -59,7 +59,7 @@ export default function SurveyContainer({ isTrackingEye, eyeTrackingData }) {
   return (
     <div className="survey-container">
       {step === 0 && (
-        <div className="form-wrapper">
+        <div className="personalform-wrapper">
           <PersonalInfoForm onNext={handleNext} email={email} />
         </div>
       )}

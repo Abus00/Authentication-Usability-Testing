@@ -71,7 +71,7 @@ const EmailPasswordLogin = () => {
           onChange={(e) => setEmail(e.target.value)}
           required
           className="email-password-login-input"
-          placeholder="Enter your email"
+          placeholder="example.email@gmail.com"
         />
         <label htmlFor="password">Password:</label>
         <div className="password-container">
@@ -82,7 +82,7 @@ const EmailPasswordLogin = () => {
             onChange={(e) => setPassword(e.target.value)}
             required
             className="email-password-login-input password-input"
-            placeholder="Enter your password"
+            placeholder="Enter your very strong password"
           />
           <button
             type="button"
