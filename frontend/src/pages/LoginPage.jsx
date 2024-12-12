@@ -24,7 +24,7 @@ export default function LoginPage({ isTrackingEye, setIsTrackingEye, setEyeTrack
             })
             .showVideo(false)
             .showFaceOverlay(false)
-            .showPredictionPoints(true)
+            .showPredictionPoints(false)
             .begin();
         } catch (error) {
           console.error("Error initializing WebGazer:", error);

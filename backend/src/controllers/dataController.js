@@ -66,6 +66,9 @@ exports.submitSurveyData = (req, res) => {
   const { personalInfo, likert, sus, nasa, hasFeedback, feedback, isTrackingEye, eyeTrackingData, timeData, chosen_authentication_method } = req.body;
   const email = personalInfo.email;
 
+  console.log("Token email:", tokenEmail);
+  console.log("Request email:", email);
+  
   if (tokenEmail !== email) {
     return res.status(403).json({ error: "Forbidden: Email mismatch" });
   }
