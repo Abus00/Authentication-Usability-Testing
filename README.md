@@ -1,12 +1,32 @@
 # Authentication Usability Testing Application
 
-This application is a mock implementation for testing various authentication methods, including:
+This application was developed as part of the "Seminar: Cyber-Resilient Systems" course at the Technical University of Munich. It serves as a mock implementation based on the concepts discussed in my seminar paper on usability and authentication.
 
-- Email and Password login
-- Email-only login
-- Passkeys (WebAuthn)
+The application showcases the fundamental principles of usability testing within an authentication context. The primary goal is to enable the comparative evaluation of 
+different authentication methods to gather empirical data on user preferences.
 
-The application is built with a React frontend and an Express.js backend using SQLite for local storage.
+## Purpose and Scope
+
+This mock application aims to study the usability and user experience of authentication systems. As of now, the application can only be run on local development. It does not include any data analytics or evaluation.
+
+### Features
+
+- **Comparative Usability Testing**: The application focuses on evaluating and comparing two authentication methods:
+  - **Email and Password Login**
+  - **Email-Only Login**
+- **Usability Metrics**: It integrates both quantitative and qualitative usability measures:
+  - Quantitative: Eye-tracking and time-tracking.
+  - Qualitative: Likert scales,the System Usability Scale (SUS), and NASATLX.
+- **Extensibility**: The application is designed to be easily extended, allowing for the addition of:
+  - New authentication methods.
+  - Additional usability measures.
+
+### Technical Overview
+
+- **Frontend**: Built using React for its modularity and extensibility.
+- **Backend**: Developed with Express.js for server-side logic.
+- **Database**: Utilizes SQLite for lightweight local storage.
+- **Environment**: Designed for local development using Vite for a streamlined development experience.
 
 ---
 
@@ -18,8 +38,10 @@ Ensure you have the following installed on your machine:
 - **npm**: Comes bundled with Node.js
 - **OpenSSL**: Pre-installed on most Linux and macOS systems. For Windows, you can install it using [these instructions](https://wiki.openssl.org/index.php/Binaries).
 
-The project is configured for local use only, and thus has specified ports for both backend and frontend. 
-A change in any of the configurational files therefore requires updates in other files aswell.
+For the Email-Only login, an account for MailTrap, which you can [create here](https://mailtrap.io).
+
+The project is configured for local use only, and thus has specified ports for both backend and frontend.
+A change in any of the configurational files therefore requires updates in other files as well.
 
 ---
 
@@ -58,8 +80,8 @@ A sample .env.example file is provided in the backend/ directory. Rename this fi
 mv .env.example .env
 ```
 
-After renaming, update the .env file with the required values.
-Make sure to replace the JWT secret.
+After renaming, update the .env file with the required values. The values for MailTrap can be found after clicking on your account under Email Testing --> Inboxes.
+**IMPORTANT**: create a _database.db_ file under the backend/src directory.
 
 ### Step 3: Install Dependencies
 
@@ -70,7 +92,7 @@ cd backend
 npm install
 ```
 
-### Step 4: Run the Backend
+### Step 4: Run the Backend and seed the database
 
 To start the backend server, navigate to the src/ directory inside backend and run:
 
@@ -78,7 +100,15 @@ To start the backend server, navigate to the src/ directory inside backend and r
 npm start
 ```
 
-## Frontend Setup 
+After the backend server has been launched, start a new terminal session and navigate to the backend directory and run:
+
+```bash
+node src/seedDatabase.js
+```
+
+---
+
+## Frontend Setup
 
 ### Step 1: Configure Environment Variables
 
@@ -89,7 +119,7 @@ A sample .env.example file is provided in the frontend/ directory. Rename this f
 mv .env.example .env
 ```
 
-After renaming, update the backend url.
+After renaming, update the backend url accordingly.
 
 ### Step 2: Generate a Self-Signed Certificate for Frontend
 
