@@ -9,6 +9,8 @@ const EmailOnlyLogin = ({ preferredAgainst }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [codeSent, setCodeSent] = useState(false);
+  const [showHelp, setShowHelp] = useState(false);
+  const [helpClicked, setHelpClicked] = useState(false); 
   const navigate = useNavigate();
   const startTimeRef = useRef(null);
 
@@ -72,12 +74,23 @@ const EmailOnlyLogin = ({ preferredAgainst }) => {
       const timeTakenSeconds = (endTime - startTimeRef.current) / 1000;
       let auth_method = "emailOnly";
 
-      navigate('/survey', { state: { email, timeData: timeTakenSeconds, chosen_authentication_method: auth_method, preferredAgainst } });
+      navigate('/survey', { state: { email, timeData: timeTakenSeconds, chosen_authentication_method: auth_method, preferredAgainst, helpClicked } });
     } catch (err) {
       setError(err.message);
       setVerificationCode('');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleHelpClick = () => {
+    setShowHelp(true);
+    setHelpClicked(true);
+  };
+
+  const handleCloseHelp = (e) => {
+    if (e.target.className === 'help-modal' || e.target.className === 'close') {
+      setShowHelp(false);
     }
   };
 
@@ -87,6 +100,15 @@ const EmailOnlyLogin = ({ preferredAgainst }) => {
   return (
     <div className="email-only-login-container">
       <h2>Email Only Login</h2>
+      <button className="help-icon" onClick={handleHelpClick}>Need help?</button>
+      {showHelp && (
+        <div className="help-modal" onClick={handleCloseHelp}>
+          <div className="help-content">
+            <span className="close" onClick={handleCloseHelp}>&times;</span>
+            <p>This authentication method allows you to log in using only your email. A verification code will be sent to your email address, which you will need to enter to complete the login process.</p>
+          </div>
+        </div>
+      )}
       {!codeSent ? (
         <form onSubmit={handleEmailSubmit} className="email-only-login-form">
           <label htmlFor="email">Email:</label>
