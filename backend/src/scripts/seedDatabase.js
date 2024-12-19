@@ -12,7 +12,12 @@ const db = new sqlite3.Database(dbPath, (error) => {
     }
 });
 
-const seedDatabase = () => {
+const seedDatabase = async (shouldSeed) => {
+    if (!shouldSeed) {
+        console.log("Seeding not required. Exiting.");
+        return;
+    }
+
     const likertQuestions = [
         "I found the authentication process easy to complete.",
         "The system's feedback during the authentication was helpful.",
@@ -47,31 +52,52 @@ const seedDatabase = () => {
     ];
 
     const insertQuestions = (tableName, questions) => {
-        const query = `INSERT INTO ${tableName} (question_text) VALUES (?)`;
-        questions.forEach((question) => {
-            db.run(query, [question], (err) => {
-                if (err) {
-                    console.error(`Error inserting question into ${tableName}:`, err.message);
-                } else {
-                    console.log(`Inserted question into ${tableName}:`, question);
-                }
+        return new Promise((resolve, reject) => {
+            const query = `INSERT INTO ${tableName} (question_text) VALUES (?)`;
+            questions.forEach((question, index) => {
+                db.run(query, [question], (err) => {
+                    if (err) {
+                        reject(err);
+                    } else if (index === questions.length - 1) {
+                        resolve();
+                    }
+                });
             });
         });
     };
 
-    db.serialize(() => {
-        insertQuestions("likert_questions", likertQuestions);
-        insertQuestions("sus_questions", susQuestions);
-        insertQuestions("nasa_questions", nasaQuestions);
-    });
+    db.serialize(async () => {
+        db.run("BEGIN TRANSACTION");
 
-    db.close((err) => {
-        if (err) {
-            console.error("Error closing the database connection:", err.message);
-        } else {
-            console.log("Database connection closed after seeding. Seeding complete.");
+        try {
+            await insertQuestions("likert_questions", likertQuestions);
+            await insertQuestions("sus_questions", susQuestions);
+            await insertQuestions("nasa_questions", nasaQuestions);
+            db.run("COMMIT", (err) => {
+                if (err) {
+                    throw err;
+                }
+                console.log("All questions inserted successfully. Transaction committed.");
+            });
+        } catch (err) {
+            console.error("Error during seeding, rolling back transaction:", err.message);
+            db.run("ROLLBACK", (rollbackErr) => {
+                if (rollbackErr) {
+                    console.error("Error during rollback:", rollbackErr.message);
+                } else {
+                    console.log("Transaction rolled back successfully.");
+                }
+            });
+        } finally {
+            db.close((err) => {
+                if (err) {
+                    console.error("Error closing the database connection:", err.message);
+                } else {
+                    console.log("Database connection closed after seeding.");
+                }
+            });
         }
     });
 };
 
-seedDatabase();
+module.exports = seedDatabase;

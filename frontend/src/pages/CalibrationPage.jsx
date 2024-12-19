@@ -6,7 +6,7 @@ import "../styles/calibrationStyles/CalibrationPage.css";
 
 export default function CalibrationPage({ setIsTrackingEye }) {
   const [showPopup, setShowPopup] = useState(true);
-  const [numberOfCalibrationPoints, setNumberOfCalibrationPoints] = useState(4);
+  const [numberOfCalibrationPoints, setNumberOfCalibrationPoints] = useState(10);
   const [calibrationCounts, setCalibrationCounts] = useState(Array(numberOfCalibrationPoints).fill(0));
   const [allCalibrated, setAllCalibrated] = useState(false);
   const navigate = useNavigate();

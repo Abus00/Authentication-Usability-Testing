@@ -1,5 +1,6 @@
 const sqlite3 = require("sqlite3").verbose();
 const path = require("path");
+const seedDatabase = require("../scripts/seedDatabase");
 
 const dbPath = path.join(__dirname, "../database.db");
 
@@ -234,7 +235,10 @@ const cleanupTables = (cleanup) => {
       "likert_responses",
       "sus_responses",
       "nasa_responses",
-      "feedback"
+      "feedback",
+      "likert_questions",
+      "sus_questions",
+      "nasa_questions"
   ];
 
   db.serialize(() => {
@@ -252,5 +256,6 @@ const cleanupTables = (cleanup) => {
 
 cleanupTables(true);
 createTables();
+seedDatabase(true);
 
-module.exports = db; 
+module.exports = db;

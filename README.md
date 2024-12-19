@@ -2,24 +2,23 @@
 
 This application was developed as part of the "Seminar: Cyber-Resilient Systems" course at the Technical University of Munich. It serves as a mock implementation based on the concepts discussed in my seminar paper on usability and authentication.
 
-The application showcases the fundamental principles of usability testing within an authentication context. The primary goal is to enable the comparative evaluation of 
-different authentication methods to gather empirical data on user preferences.
+The application showcases the fundamental principles of usability testing within an authentication context. The primary goal is to enable the comparative evaluation of different authentication methods to gather empirical data on user preferences.
 
 ## Purpose and Scope
-
-This mock application aims to study the usability and user experience of authentication systems. As of now, the application can only be run on local development. It does not include any data analytics or evaluation.
+This mock application aims to provide a foundational usability testing framework for evaluating authentication systems. As of now, the application can only be run on local development. It does not include any data analytics or evaluation.
 
 ### Features
 
-- **Comparative Usability Testing**: The application focuses on evaluating and comparing two authentication methods:
-  - **Email and Password Login**
-  - **Email-Only Login**
+- **Comparative Usability Testing**: The application focuses on evaluating and comparing authentication methods. It currently supports two methods:
+  - Email and Password Login
+  - Email-Only Login
 - **Usability Metrics**: It integrates both quantitative and qualitative usability measures:
   - Quantitative: Eye-tracking and time-tracking.
   - Qualitative: Likert scales,the System Usability Scale (SUS), and NASATLX.
 - **Extensibility**: The application is designed to be easily extended, allowing for the addition of:
   - New authentication methods.
   - Additional usability measures.
+  - Data analytics and evaluation modules.
 
 ### Technical Overview
 
@@ -37,11 +36,10 @@ Ensure you have the following installed on your machine:
 - **Node.js**: [Download here](https://nodejs.org/)
 - **npm**: Comes bundled with Node.js
 - **OpenSSL**: Pre-installed on most Linux and macOS systems. For Windows, you can install it using [these instructions](https://wiki.openssl.org/index.php/Binaries).
-
-For the Email-Only login, an account for MailTrap, which you can [create here](https://mailtrap.io).
+- **MailTrap Account**: For the Email-Only Login method, you need a MailTrap account, which you can [create here](https://mailtrap.io).
 
 The project is configured for local use only, and thus has specified ports for both backend and frontend.
-A change in any of the configurational files therefore requires updates in other files as well.
+A change in any of the configurational files within the backend or frontend - like the .env - therefore requires an update in the respective file of the other part of the application.
 
 ---
 
@@ -81,6 +79,7 @@ mv .env.example .env
 ```
 
 After renaming, update the .env file with the required values. The values for MailTrap can be found after clicking on your account under Email Testing --> Inboxes.
+
 **IMPORTANT**: create a _database.db_ file under the backend/src directory.
 
 ### Step 3: Install Dependencies
