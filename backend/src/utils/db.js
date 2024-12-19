@@ -40,6 +40,7 @@ const createTables = () => {
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             user_email TEXT NOT NULL,
             chosen_authentication_method TEXT NOT NULL,
+            preferred_against TEXT NOT NULL,
             FOREIGN KEY (user_email) REFERENCES users(email)
           );
         `;

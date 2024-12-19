@@ -3,7 +3,7 @@ import validator from 'validator';
 import { useNavigate } from 'react-router-dom';
 import '../../styles/loginStyles/EmailPasswordLogin.css'; 
 
-const EmailPasswordLogin = () => {
+const EmailPasswordLogin = ({ preferredAgainst }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -48,7 +48,7 @@ const EmailPasswordLogin = () => {
       console.log('Time taken to login within EmailPassword Component:', timeTakenSeconds);
       let auth_method = "emailPassword";
 
-      navigate('/survey', { state: { email, timeData: timeTakenSeconds, chosen_authentication_method: auth_method } });
+      navigate('/survey', { state: { email, timeData: timeTakenSeconds, chosen_authentication_method: auth_method, preferredAgainst } });
     } catch (err) {
       setError(err.message);
     } finally {

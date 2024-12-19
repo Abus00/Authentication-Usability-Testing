@@ -6,7 +6,8 @@ import "../styles/loginStyles/LoginPage.css";
 export default function LoginPage({ isTrackingEye, setIsTrackingEye, setEyeTrackingData }) {
   const [choseLoginDisplay, setChoseLoginDisplay] = useState(true);
   const [chosenOption, setChosenOption] = useState(null);
-  const [loginOptions, setLoginOptions] = useState(null); 
+  const [loginOptions, setLoginOptions] = useState(null);
+  const [preferredAgainst, setPreferredAgainst] = useState(null);
   const options = ["emailOnly", "emailPassword"];
 
   useEffect(() => {
@@ -67,15 +68,15 @@ export default function LoginPage({ isTrackingEye, setIsTrackingEye, setEyeTrack
     };
 
     setLoginOptions(chooseTwoLoginOptions());
-  }, []); 
+  }, []);
 
-  const optionToChoice = (option) => {
+  const optionToChoice = (option, preferredAgainst) => {
     switch (option) {
       case "emailOnly":
-        setChosenOption(<EmailOnlyLogin />);
+        setChosenOption(<EmailOnlyLogin preferredAgainst={preferredAgainst} />);
         break;
       case "emailPassword":
-        setChosenOption(<EmailPasswordLogin />);
+        setChosenOption(<EmailPasswordLogin preferredAgainst={preferredAgainst} />);
         break;
       default:
         setChosenOption(null);
@@ -94,12 +95,14 @@ export default function LoginPage({ isTrackingEye, setIsTrackingEye, setEyeTrack
   };
 
   const handleLoginChoice = (option) => {
-    optionToChoice(option);
+    const preferredAgainstOption = loginOptions.find((opt) => opt !== option);
+    setPreferredAgainst(preferredAgainstOption);
+    optionToChoice(option, preferredAgainstOption);
     setChoseLoginDisplay(false);
   };
 
   const displayTwoLoginOptions = () => {
-    if (!loginOptions) return null; 
+    if (!loginOptions) return null;
 
     const [option1, option2] = loginOptions;
 

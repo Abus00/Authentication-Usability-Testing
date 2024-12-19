@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import validator from 'validator';
 import '../../styles/loginStyles/EmailOnlyLogin.css'; 
 
-const EmailOnlyLogin = () => {
+const EmailOnlyLogin = ({ preferredAgainst }) => {
   const [email, setEmail] = useState('');
   const [verificationCode, setVerificationCode] = useState('');
   const [loading, setLoading] = useState(false);
@@ -72,7 +72,7 @@ const EmailOnlyLogin = () => {
       const timeTakenSeconds = (endTime - startTimeRef.current) / 1000;
       let auth_method = "emailOnly";
 
-      navigate('/survey', { state: { email, timeData: timeTakenSeconds, chosen_authentication_method: auth_method } });
+      navigate('/survey', { state: { email, timeData: timeTakenSeconds, chosen_authentication_method: auth_method, preferredAgainst } });
     } catch (err) {
       setError(err.message);
       setVerificationCode('');

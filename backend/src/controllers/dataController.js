@@ -1,5 +1,6 @@
 const { getLikertQuestions, getSUSQuestions, getNASAQuestions, insertSurveyData } = require("../models/dataModel");
 const { verifyAuthToken } = require("../utils/jwtUtils");
+const { update } = require("../models/userModel");
 
 exports.getLikertQuestions = async (req, res) => {
   console.log("Received request to get likert questions");
@@ -59,8 +60,15 @@ exports.submitSurveyData = async (req, res) => {
 
   const tokenEmail = decoded.email;
 
-  const { personalInfo, likert, sus, nasa, hasFeedback, feedback, isTrackingEye, eyeTrackingData, timeData, chosen_authentication_method } = req.body;
+  const { personalInfo, likert, sus, nasa, hasFeedback, feedback, isTrackingEye, eyeTrackingData, timeData, chosen_authentication_method, preferredAgainst } = req.body;
   const email = personalInfo.email;
+  const user = {
+    "email": email,
+    "name": personalInfo.name,
+    "lastname": personalInfo.lastname,
+    "sex": personalInfo.gender,
+    "age": personalInfo.age,
+  }
 
   console.log("Token email:", tokenEmail);
   console.log("Request email:", email);
@@ -75,11 +83,19 @@ exports.submitSurveyData = async (req, res) => {
   console.log("-----------------------------\n");
 
   try {
+
+    console.log("Updating user data...");
+    await update(user);
+    console.log("User data updated successfully");
+
+    console.log("Inserting survey data...");
     await insertSurveyData({
       email,
       chosen_authentication_method,
+      preferredAgainst,
       hasFeedback,
       feedback,
+      timeData,
       likert,
       sus,
       nasa,

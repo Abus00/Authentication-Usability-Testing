@@ -12,6 +12,7 @@ export default function SurveyContainer({ isTrackingEye, eyeTrackingData }) {
   const [email, setEmail] = useState("");
   const [timeData, setTimeData] = useState(0);
   const [chosen_authentication_method, setChosen_authentication_method] = useState("");
+  const [preferredAgainst, setPreferredAgainst] = useState("");
   const [step, setStep] = useState(0);
   const [feedback, setFeedback] = useState("");
   const [surveyData, setSurveyData] = useState({
@@ -25,23 +26,27 @@ export default function SurveyContainer({ isTrackingEye, eyeTrackingData }) {
     eyeTrackingData: eyeTrackingData || [],
     timeData: 0,
     chosen_authentication_method: "",
+    preferredAgainst: "",
   });
 
   const location = useLocation();
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (location.state && location.state.email && location.state.timeData && location.state.chosen_authentication_method) {
+    if (location.state && location.state.email && location.state.timeData && location.state.chosen_authentication_method && location.state.preferredAgainst) {
       setEmail(location.state.email);
       setTimeData(location.state.timeData);
       setChosen_authentication_method(location.state.chosen_authentication_method);
+      setPreferredAgainst(location.state.preferredAgainst);
       setSurveyData((prevData) => ({
         ...prevData,
         timeData: location.state.timeData,
         chosen_authentication_method: location.state.chosen_authentication_method,
+        preferredAgainst: location.state.preferredAgainst,
       }));
       console.log("The amount of seconds it took to complete the authentication is: ", location.state.timeData);
       console.log("The chosen authentication method is: ", location.state.chosen_authentication_method);
+      console.log("The preferred against method is: ", location.state.preferredAgainst);
     } else {
       alert("Please go back to the login page and login again.");
       navigate("/login");

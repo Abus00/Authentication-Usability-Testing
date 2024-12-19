@@ -42,10 +42,10 @@ const insertSurveyData = (surveyData) => {
       db.run("BEGIN TRANSACTION");
 
       const insertSurvey = `
-        INSERT INTO survey (user_email, chosen_authentication_method)
-        VALUES (?, ?)
+        INSERT INTO survey (user_email, chosen_authentication_method, preferred_against)
+        VALUES (?, ?, ?)
       `;
-      db.run(insertSurvey, [surveyData.email, surveyData.chosen_authentication_method], function (err) {
+      db.run(insertSurvey, [surveyData.email, surveyData.chosen_authentication_method, surveyData.preferredAgainst], function (err) {
         if (err) {
           db.run("ROLLBACK");
           return reject(err);
@@ -103,6 +103,17 @@ const insertSurveyData = (surveyData) => {
               return reject(err);
             }
           });
+        });
+
+        const insertTimeTrackingData = `
+          INSERT INTO time_tracking_data (survey_id, time_spent)
+          VALUES (?, ?)
+        `;
+        db.run(insertTimeTrackingData, [surveyId, surveyData.timeData], function (err) {
+          if (err) {
+            db.run("ROLLBACK");
+            return reject(err);
+          }
         });
 
         if (surveyData.isTrackingEye) {
