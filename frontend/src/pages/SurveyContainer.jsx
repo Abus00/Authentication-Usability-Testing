@@ -23,8 +23,8 @@ export default function SurveyContainer({ isTrackingEye, eyeTrackingData }) {
     feedback: "",
     isTrackingEye: isTrackingEye,
     eyeTrackingData: eyeTrackingData || [],
-    timeData: timeData,
-    chosen_authentication_method: chosen_authentication_method,
+    timeData: 0,
+    chosen_authentication_method: "",
   });
 
   const location = useLocation();
@@ -35,6 +35,11 @@ export default function SurveyContainer({ isTrackingEye, eyeTrackingData }) {
       setEmail(location.state.email);
       setTimeData(location.state.timeData);
       setChosen_authentication_method(location.state.chosen_authentication_method);
+      setSurveyData((prevData) => ({
+        ...prevData,
+        timeData: location.state.timeData,
+        chosen_authentication_method: location.state.chosen_authentication_method,
+      }));
       console.log("The amount of seconds it took to complete the authentication is: ", location.state.timeData);
       console.log("The chosen authentication method is: ", location.state.chosen_authentication_method);
     } else {
