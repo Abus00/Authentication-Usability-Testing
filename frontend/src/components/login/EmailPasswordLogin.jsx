@@ -9,6 +9,8 @@ const EmailPasswordLogin = ({ preferredAgainst }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
+  const [showHelp, setShowHelp] = useState(false); 
+  const [helpClicked, setHelpClicked] = useState(false);
   const navigate = useNavigate();
 
   const startTimeRef = useRef(null);
@@ -48,7 +50,7 @@ const EmailPasswordLogin = ({ preferredAgainst }) => {
       console.log('Time taken to login within EmailPassword Component:', timeTakenSeconds);
       let auth_method = "emailPassword";
 
-      navigate('/survey', { state: { email, timeData: timeTakenSeconds, chosen_authentication_method: auth_method, preferredAgainst } });
+      navigate('/survey', { state: { email, timeData: timeTakenSeconds, chosen_authentication_method: auth_method, preferredAgainst, helpClicked } });
     } catch (err) {
       setError(err.message);
     } finally {
@@ -56,12 +58,32 @@ const EmailPasswordLogin = ({ preferredAgainst }) => {
     }
   };
 
+  const handleHelpClick = () => {
+    setShowHelp(true);
+    setHelpClicked(true);
+  };
+
+  const handleCloseHelp = (e) => {
+    if (e.target.classList.contains('help-modal') || e.target.classList.contains('close')) {
+      setShowHelp(false);
+    }
+  };
+
   const isEmailValid = validator.isEmail(email);
   const isFormValid = isEmailValid && password;
 
   return (
-    <div className="email-password-login-container">
+    <div className={`email-password-login-container ${showHelp ? 'modal-open' : ''}`}>
       <h2>Email and Password Login</h2>
+      <button className="help-icon" onClick={handleHelpClick}>Need help?</button>
+      {showHelp && (
+        <div className="help-modal" onClick={handleCloseHelp}>
+          <div className="help-content">
+            <span className="close" onClick={handleCloseHelp}>&times;</span>
+            <p>This authentication method allows you to log in using your email and password. Enter your email address and password to complete the login process.</p>
+          </div>
+        </div>
+      )}
       <form onSubmit={handleSubmit} className="email-password-login-form">
         <label htmlFor="email">Email:</label>
         <input
