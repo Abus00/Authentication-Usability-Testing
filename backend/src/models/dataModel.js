@@ -39,13 +39,16 @@ const getNASAQuestions = () => {
 const insertSurveyData = (surveyData) => {
   return new Promise((resolve, reject) => {
     db.serialize(() => {
+
+      console.log("Recieved helpClicked as : ", surveyData.helpClicked);
+
       db.run("BEGIN TRANSACTION");
 
       const insertSurvey = `
-        INSERT INTO survey (user_email, chosen_authentication_method, preferred_against)
-        VALUES (?, ?, ?)
+        INSERT INTO survey (user_email, chosen_authentication_method, preferred_against, help_clicked)
+        VALUES (?, ?, ?, ?)
       `;
-      db.run(insertSurvey, [surveyData.email, surveyData.chosen_authentication_method, surveyData.preferredAgainst], function (err) {
+      db.run(insertSurvey, [surveyData.email, surveyData.chosen_authentication_method, surveyData.preferredAgainst, surveyData.helpClicked ? 1 : 0], function (err) {
         if (err) {
           db.run("ROLLBACK");
           return reject(err);

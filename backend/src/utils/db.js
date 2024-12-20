@@ -41,6 +41,7 @@ const createTables = () => {
             user_email TEXT NOT NULL,
             chosen_authentication_method TEXT NOT NULL,
             preferred_against TEXT NOT NULL,
+            help_clicked INTEGER NOT NULL,
             FOREIGN KEY (user_email) REFERENCES users(email)
           );
         `;

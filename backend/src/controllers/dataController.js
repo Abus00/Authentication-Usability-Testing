@@ -60,7 +60,7 @@ exports.submitSurveyData = async (req, res) => {
 
   const tokenEmail = decoded.email;
 
-  const { personalInfo, likert, sus, nasa, hasFeedback, feedback, isTrackingEye, eyeTrackingData, timeData, chosen_authentication_method, preferredAgainst } = req.body;
+  const { personalInfo, likert, sus, nasa, hasFeedback, feedback, isTrackingEye, eyeTrackingData, timeData, chosen_authentication_method, preferredAgainst, helpClicked } = req.body;
   const email = personalInfo.email;
   const user = {
     "email": email,
@@ -101,6 +101,7 @@ exports.submitSurveyData = async (req, res) => {
       nasa,
       isTrackingEye,
       eyeTrackingData,
+      helpClicked: helpClicked === true 
     });
     console.log("Survey data stored successfully");
     res.status(200).json({ message: "Survey data submitted successfully" });
