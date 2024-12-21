@@ -24,7 +24,7 @@ exports.emailPasswordLogin = async (req, res) => {
         ) {
             return res.status(400).json({
                 message:
-                    "Password must be at least 10 characters long and include numbers, uppercase letters, and special characters",
+                    "Password must be at least 10 characters long and include one number, one uppercase letter, and one special characters",
             });
         }
 
