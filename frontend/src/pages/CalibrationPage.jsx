@@ -22,13 +22,20 @@ export default function CalibrationPage({ setIsTrackingEye }) {
     { x: "30%", y: "5%" },
     { x: "30%", y: "90%" },
     { x: "70%", y: "90%" },
-  ].slice(0, numberOfCalibrationPoints);
+    { x: "10%", y: "78%"},
+    { x: "90%", y: "78%"},
+    { x: "90%", y: "50%" },
+    { x: "50%", y: "80%" },
+    { x: "50%", y: "50%" },
+    { x: "30%", y: "35%" },
+  ].slice(0);
 
   const initializeWebGazer = async () => {
     if (window.webgazer) {
       await window.webgazer.setGazeListener((data, elapsedTime) => {
         if (data == null) return;
-        console.log(`Gaze prediction: x=${data.x}, y=${data.y}`);
+        // Debug gaze prediction data
+        //console.log(`Gaze prediction: x=${data.x}, y=${data.y}`);
       }).begin();
 
       window.webgazer

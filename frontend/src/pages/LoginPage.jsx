@@ -8,6 +8,8 @@ export default function LoginPage({ isTrackingEye, setIsTrackingEye, setEyeTrack
   const [chosenOption, setChosenOption] = useState(null);
   const [loginOptions, setLoginOptions] = useState(null);
   const [preferredAgainst, setPreferredAgainst] = useState(null);
+
+  // This array contains the authentication methods that the user can choose from
   const options = ["emailOnly", "emailPassword"];
 
   useEffect(() => {
@@ -21,12 +23,18 @@ export default function LoginPage({ isTrackingEye, setIsTrackingEye, setEyeTrack
                 ...prevData,
                 { x: data.x, y: data.y },
               ]);
-              console.log(`Gaze prediction: x=${data.x}, y=${data.y}`);
+              // Within this block, it is possible to add a event listener that tracks mouse movement
+              // Through this, we can compare the mouse movement with the eye tracking data
+              // Adding the data extraction within here ensures that the data is timely and accurate
+
+              // Debug statement
+              // console.log(`Gaze prediction: x=${data.x}, y=${data.y}`);
             })
             .showVideo(false)
             .showFaceOverlay(false)
             .showPredictionPoints(false)
             .begin();
+
         } catch (error) {
           console.error("Error initializing WebGazer:", error);
         }
@@ -70,6 +78,9 @@ export default function LoginPage({ isTrackingEye, setIsTrackingEye, setEyeTrack
     setLoginOptions(chooseTwoLoginOptions());
   }, []);
 
+
+  // This fucntion is used to set the authentication method the user chose as the chosen option, which will then be displayed on the screen
+  // Thus the swtich case must be extended if a new authentication method is added to the options array
   const optionToChoice = (option, preferredAgainst) => {
     switch (option) {
       case "emailOnly":
@@ -83,6 +94,9 @@ export default function LoginPage({ isTrackingEye, setIsTrackingEye, setEyeTrack
     }
   };
 
+
+  // If a new authentication method is added to the options array, the choiceToDescriptionText function must be updated,
+  // so that the user can see the description of the new authentication method easily. 
   const choiceToDescriptionText = (option) => {
     switch (option) {
       case "emailOnly":
@@ -101,6 +115,12 @@ export default function LoginPage({ isTrackingEye, setIsTrackingEye, setEyeTrack
     setChoseLoginDisplay(false);
   };
 
+
+  // This function is used to display the two authentication methods that the user can choose from
+  // As there are currently only two options, the function is hardcoded to display two options
+  // If more options are added, the function must be updated to display the new options
+  // It is advisable to use a random number generator to select the options, as this will make sure that no bias is present in the selection
+  // If there should be static comparisons between selected authentication methods, the function needs to be updated to reflect this
   const displayTwoLoginOptions = () => {
     if (!loginOptions) return null;
 

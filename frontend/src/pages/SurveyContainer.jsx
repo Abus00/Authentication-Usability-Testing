@@ -36,6 +36,9 @@ export default function SurveyContainer({ isTrackingEye, eyeTrackingData }) {
 
   useEffect(() => {
     if (location.state && location.state.email && location.state.timeData && location.state.chosen_authentication_method && location.state.preferredAgainst && location.state.helpClicked !== undefined) {
+
+      // This if statement is run if the user has successfully logged in and navigated to the survey page
+      // Within here, we set the state variables to the values passed from the login page, such as eye tracking data, time data, etc.
       setEmail(location.state.email);
       setTimeData(location.state.timeData);
       setChosen_authentication_method(location.state.chosen_authentication_method);
@@ -53,6 +56,7 @@ export default function SurveyContainer({ isTrackingEye, eyeTrackingData }) {
       console.log("The preferred against method is: ", location.state.preferredAgainst);
       console.log("Help clicked: ", location.state.helpClicked);
     } else {
+      // This else statement is run if the user tries to navigate to the survey page without logging in
       alert("Please go back to the login page and login again.");
       navigate("/login");
     }
@@ -129,6 +133,12 @@ export default function SurveyContainer({ isTrackingEye, eyeTrackingData }) {
           </div>
         </div>
       )}
+
+      {/*
+      When additional questionnaires need to be added, add another step and add another conditional rendering block here.
+      This also needs updating within the handleNext function to store the data in the correct place.
+      Each questionnaire should however be an own component
+      */}
     </div>
   );
 }
