@@ -14,23 +14,25 @@ exports.emailPasswordLogin = async (req, res) => {
             return res.status(400).json({ message: "Invalid email!" });
         }
 
-        if (
-            !validator.isStrongPassword(password, {
-                minLength: 10,
-                minNumbers: 1,
-                minUppercase: 1,
-                minSymbols: 1,
-            })
-        ) {
-            return res.status(400).json({
-                message:
-                    "Password must be at least 10 characters long and include one number, one uppercase letter, and one special characters",
-            });
-        }
 
         let user = await userModel.findByEmail(sanitizedEmail);
 
         if (!user) {
+
+            if (
+                !validator.isStrongPassword(password, {
+                    minLength: 10,
+                    minNumbers: 1,
+                    minUppercase: 1,
+                    minSymbols: 1,
+                })
+            ) {
+                return res.status(400).json({
+                    message:
+                        "Password must be at least 10 characters long and include one number, one uppercase letter, and one special characters",
+                });
+            }
+
             const salt = await bcrypt.genSalt(10);
             const hashedPassword = await bcrypt.hash(password, salt);
 
