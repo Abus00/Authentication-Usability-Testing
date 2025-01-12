@@ -37,5 +37,9 @@ key.pem
 cert.pem
 csr.pem
 
+frontend/vite-cert.pem
+frontend/vite-csr.pem
+frontend/vite-key.pem
+
 #database file (i forgot this somehow)
 *.db
