@@ -1,6 +1,6 @@
 # Authentication Usability Testing
 
-This application was developed as part of the "Seminar: Cyber-Resilient Systems" course at the Technical University of Munich. It serves as a prototype implementation based on the concepts discussed in my seminar paper on usability and authentication.
+This application was developed as part of the "Seminar: Cyber-Resilient Systems" course at the Technical University of Munich. It serves as a small-scale prototype implementation based on the concepts discussed in my seminar paper titled ["Cyber Resilience Through Usable Security: A Prototype for Authentication Usability Testing"](https://mediatum.ub.tum.de/1781584), published in the *Proceedings of the Seminar on Cyber-Resilient Systems*, Technical University of Munich, 2025.
 
 The application showcases the fundamental principles of usability testing within an authentication context. The primary goal is to enable the comparative evaluation of different authentication methods to gather empirical data on user preferences.
 
